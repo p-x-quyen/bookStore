@@ -1,0 +1,2 @@
+hàm add book item trong cart có thể không dùng
+association là quan hệ hai chiều khi chuyển sang 3layers
