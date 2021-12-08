@@ -1,0 +1,30 @@
+/* 
+    Created on : Dec 8, 2021, 5:03:22 PM
+    Author     : Administrator
+*/
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+
+.side-bar {
+  height: 100vh;
+  background-color: #eceff1;
+  width: 300px;
+}
+
+.side-bar .nav-item a {
+  color: #000;
+}
+
+.side-bar .nav-item a:hover:not(.active) {
+  background-color: #e1e1e1;
+}
+
+.side-bar .nav-item a i {
+  width: 30px;
+  font-size: 0.9rem;
+}
