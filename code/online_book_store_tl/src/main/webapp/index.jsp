@@ -17,12 +17,12 @@
     </head>
     <body>
         <div class="container">
-            <div class="row m-0 p-0">
+            <div class="row m-0 p-0 mb-1">
                 <div class="col-sm-5 pl-0">
                     <img src="assets/img/login/book.jpg" alt="book" class="img-fluid rounded-left">
                 </div>
                 <div class="col-sm-7 text-center align-self-center">
-                    <h1 class="animate__animated animate__heartBeat animate__infinite text-primary">Log in</h1>
+                    <h1 class="animate__animated animate__heartBeat animate__infinite text-primary mb-0">Log in</h1>
                     <form action="" method="post">
                         <div class="form-row py-3 pt-5">
                             <div class="offset-1 col-sm-10">
@@ -40,6 +40,7 @@
                             </div>
                         </div>
                     </form>
+                    <a href="#" class="mb-3">Register</a>
                 </div>
             </div>
         </div>

@@ -2,3 +2,4 @@ hàm add book item trong cart có thể không dùng
 association là quan hệ hai chiều khi chuyển sang 3layers
 
 xóa visual đi và chỉnh lại gender thành int
+tại các bảng nối quan hệ nhiều nhiều thì them thuộc tính id riêng cho bảng đó ở trong database

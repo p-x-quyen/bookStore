@@ -1,0 +1,13 @@
+/* 
+    Created on : Dec 10, 2021, 3:36:51 PM
+    Author     : Administrator
+*/
+
+.btn-add,
+.btn-search {
+    box-shadow: none!important;
+}
+
+/*.input-search:focus {
+    box-shadow: none!important;
+}*/

@@ -1,0 +1,19 @@
+/* 
+    Created on : Dec 10, 2021, 5:26:46 PM
+    Author     : Administrator
+*/
+
+.book-item-img {
+    display:block; 
+    width: 100%; 
+    height: auto;
+}
+
+.my-button {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.my-button:hover {
+    background-color: #0d69cb !important;
+}
