@@ -9,11 +9,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../assets/css/bootstrap-4.6.1-dist/css/bootstrap.min.css">
-        <link href="../assets/font/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
-        <link rel="stylesheet" href="../assets/css/header.css">
-        <link rel="stylesheet" href="../assets/css/side-bar.css">
-        <link rel="stylesheet" href="../assets/css/admin/book-list.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/bootstrap-4.6.1-dist/css/bootstrap.min.css">
+        <link href="<%=request.getContextPath()%>/assets/font/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/side-bar.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/admin/book-list.css">
         <title>List books</title>
     </head>
     <body>
