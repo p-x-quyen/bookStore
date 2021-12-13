@@ -1,0 +1,97 @@
+package dao.bookDAO;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.book.Author;
+import utils.db.ConnectDB;
+
+/**
+ *
+ * @author Administrator
+ */
+public class AuthorDAOImpl implements AuthorDAO{
+    private Connection connection;
+     
+    public AuthorDAOImpl() {
+        try {
+            this.connection = ConnectDB.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+
+    @Override
+    public Author getAuthorById(int authorId) {
+        Author author = null;
+        String sql = "SELECT * FROM `author` WHERE `ID` = ?";
+        
+        try {
+            
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, authorId);
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String fullName = resultSet.getString("FullName");
+                String biography = resultSet.getString("Biography");
+                String address = resultSet.getString("Address");
+                
+                author = new Author(id, fullName, biography, address);
+            }
+            
+            resultSet.close();
+            statement.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return author;
+    }
+
+    @Override
+    public List<Author> getAuthorsByBookId(int bookId) {
+        List<Author> listAuthors = new ArrayList<>();
+        String sql = "SELECT `author`.* FROM `author`, `book_author`" + 
+                " WHERE `book_author`.`AuthorID` = `author`.`ID`"+
+                " AND `book_author`.`BookID` = ?";
+        
+        try {
+            
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, bookId);
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String fullName = resultSet.getString("FullName");
+                String biography = resultSet.getString("Biography");
+                String address = resultSet.getString("Address");
+                
+                Author author = new Author(id, fullName, biography, address);
+                listAuthors.add(author);
+            }
+            
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listAuthors;
+    }
+    
+}

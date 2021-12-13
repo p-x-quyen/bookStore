@@ -1,27 +1,29 @@
 package web;
 
+import dao.bookDAO.BookDAO;
+import dao.bookDAO.BookDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.book.Book;
 
 /**
  *
  * @author Administrator
  */
 public class AdminServlet extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private BookDAO bookDAO;
+    
+    @Override
+    public void init() {
+        this.bookDAO = new BookDAOImpl();
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -31,7 +33,11 @@ public class AdminServlet extends HttpServlet {
 //            out.println(action);
             switch(action) {
                 case "/AdminServlet":
-                    response.sendRedirect("admin/book-list.jsp");
+                    List<Book> listBooks = bookDAO.getAllBooks();
+//                    out.println(listBooks.get(0).toString());
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-list.jsp");
+                    dispatcher.forward(request, response);
+//                    response.sendRedirect("admin/book-list.jsp");
                     break;
             }
         }
