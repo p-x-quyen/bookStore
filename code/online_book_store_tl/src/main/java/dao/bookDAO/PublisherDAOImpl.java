@@ -30,7 +30,7 @@ public class PublisherDAOImpl implements PublisherDAO{
 
     @Override
     public Publisher getPublisherById(int publisherId) {
-        Publisher publisher = null;
+        Publisher publisher = new Publisher();
         String sql = "SELECT * FROM `publisher` WHERE `ID` = ?";
         
         try {
@@ -40,7 +40,7 @@ public class PublisherDAOImpl implements PublisherDAO{
             
             ResultSet resultSet = statement.executeQuery();
             
-            while(resultSet.next()) {
+            if (resultSet.next()) {
                 int id = resultSet.getInt("ID");
                 String name = resultSet.getString("Name");
                 String address = resultSet.getString("Address");

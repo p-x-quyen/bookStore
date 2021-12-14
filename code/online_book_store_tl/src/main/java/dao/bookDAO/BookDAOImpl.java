@@ -2,6 +2,7 @@ package dao.bookDAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -66,6 +67,43 @@ public class BookDAOImpl implements BookDAO{
         }
         
         return listBooks;
+    }
+
+    @Override
+    public Book getBookById(int bookId) {
+        Book book = new Book();
+        String sql = "SELECT * FROM `book` WHERE `ID` = ?";
+        
+        try {
+            
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, bookId);
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                int publisherID = resultSet.getInt("PublisherID");
+                String name = resultSet.getString("Name");
+                String summary = resultSet.getString("Summary");
+                int numberOfPages = resultSet.getInt("NumberOfPages");
+                String language = resultSet.getString("Language");
+                String isbn = resultSet.getString("ISBN");
+                
+                List<Author> listAuthors = authorDAO.getAuthorsByBookId(id);
+                Publisher publisher = publisherDAO.getPublisherById(publisherID);
+                
+                book = new Book(id, name, summary, numberOfPages, language, isbn, listAuthors, publisher);
+            }
+            
+            resultSet.close();
+            statement.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return book;
     }
     
 }

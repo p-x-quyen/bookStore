@@ -4,6 +4,9 @@
     Author     : Administrator
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="model.book.Book"%>
+<%@page import="model.book.Book"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -36,7 +39,7 @@
                 <div class="pl-3 pr-3 side-bar position-fixed">
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link active">
+                            <a href="BookList" class="nav-link active">
                                 <i class="fas fa-book-open"></i>
                                 Books
                             </a>
@@ -50,7 +53,7 @@
                         <li class="nav-item pt-2">
                             <a href="#" class="nav-link">
                                 <i class="fas fa-sign-out-alt"></i>
-                                Log outs
+                                Log out
                             </a>
                         </li>
                     </ul>
@@ -79,7 +82,10 @@
                                         Tên sách
                                     </th>
                                     <th class="border-bottom-0">
-                                        Tác giả
+                                        ISBN
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        Language
                                     </th>
                                     <th class="border-bottom-0">
                                         Nhà xuất bản
@@ -87,76 +93,31 @@
                                 </tr>
                             </thead>
                             <tbody id="my-table" class="">
+                                <%  ArrayList<Book> listBooks = (ArrayList<Book>) request.getAttribute("listBooks");
+                                    for (Book book:listBooks) {
+                                %>
                                 <tr>
                                     <td class="align-middle">
-                                        1
+                                        <%=book.getId()%>
                                     </td>
                                     <td class="align-middle">
-                                        <a href="#" class="text-dark">Đắc nhân tâm</a>
+                                        <a href="BookDetails?id=<%=book.getId()%>" class="text-dark">
+                                            <%=book.getName()%>
+                                        </a>
                                     </td>
                                     <td class="align-middle">
-                                        Dale Carnegie
+                                        <%=book.getIsbn()%>
                                     </td>
                                     <td class="align-middle">
-                                        Nhà xuất bản Hà Nội
+                                        <%=book.getLanguage()%>
+                                    </td>
+                                    <td class="align-middle">
+                                        <%=book.getPublisher().getName()%>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        1
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="#" class="text-dark">Đắc nhân tâm</a>
-                                    </td>
-                                    <td class="align-middle">
-                                        Dale Carnegie
-                                    </td>
-                                    <td class="align-middle">
-                                        Nhà xuất bản Hà Nội
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        1
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="#" class="text-dark">Đắc nhân tâm</a>
-                                    </td>
-                                    <td class="align-middle">
-                                        Dale Carnegie
-                                    </td>
-                                    <td class="align-middle">
-                                        Nhà xuất bản Hà Nội
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        1
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="#" class="text-dark">Đắc nhân tâm</a>
-                                    </td>
-                                    <td class="align-middle">
-                                        Dale Carnegie
-                                    </td>
-                                    <td class="align-middle">
-                                        Nhà xuất bản Hà Nội
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        1
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="#" class="text-dark">Đắc nhân tâm</a>
-                                    </td>
-                                    <td class="align-middle">
-                                        Dale Carnegie
-                                    </td>
-                                    <td class="align-middle">
-                                        Nhà xuất bản Hà Nội
-                                    </td>
-                                </tr>
+                                <%
+                                    }
+                                %>
                             </tbody>
                         </table>
                     </div>

@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-sm-7 text-center align-self-center">
                     <h1 class="animate__animated animate__heartBeat animate__infinite text-primary mb-0">Log in</h1>
-                    <form action="LoginServlet" method="POST">
+                    <form action="Login" method="POST">
                         <div class="form-row py-3 pt-5">
                             <div class="offset-1 col-sm-10">
                                 <input type="text" class="inp px-3" placeholder="Username" name="username">

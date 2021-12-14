@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Administrator
  */
-public class LoginServlet extends HttpServlet {
+public class Login extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,8 +35,8 @@ public class LoginServlet extends HttpServlet {
 //            out.println(request.getContextPath());
             if(username.equalsIgnoreCase("admin") && password.equalsIgnoreCase("admin")) {
                 HttpSession session = request.getSession(true);
-                session.setAttribute("admin", username);
-                response.sendRedirect("AdminServlet");
+                session.setAttribute("username", username);
+                response.sendRedirect("BookList");
                 
             } else {
                 out.println("<script type=\"text/javascript\">");

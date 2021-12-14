@@ -1,4 +1,4 @@
-package web;
+package web.book;
 
 import dao.bookDAO.BookDAO;
 import dao.bookDAO.BookDAOImpl;
@@ -10,13 +10,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.book.Book;
 
 /**
  *
  * @author Administrator
  */
-public class AdminServlet extends HttpServlet {
+public class BookDetails extends HttpServlet {
     private BookDAO bookDAO;
     
     @Override
@@ -28,17 +29,15 @@ public class AdminServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String action = request.getServletPath();
-//            out.println(action);
-            switch(action) {
-                case "/AdminServlet":
-                    List<Book> listBooks = bookDAO.getAllBooks();
-//                    out.println(listBooks.get(0).toString());
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-list.jsp");
-                    dispatcher.forward(request, response);
-//                    response.sendRedirect("admin/book-list.jsp");
-                    break;
+            HttpSession httpSession = request.getSession(false);
+            String username = (String)httpSession.getAttribute("username");
+            if (username.equalsIgnoreCase("admin")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                Book book = bookDAO.getBookById(id);
+                request.setAttribute("book", book);
+//                out.println(book.toString());
+                RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-details.jsp");
+                dispatcher.forward(request, response);   
             }
         }
     }

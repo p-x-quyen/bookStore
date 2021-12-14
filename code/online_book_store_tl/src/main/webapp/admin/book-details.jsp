@@ -4,16 +4,17 @@
     Author     : Administrator
 --%>
 
+<%@page import="model.book.Book"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../assets/css/bootstrap-4.6.1-dist/css/bootstrap.min.css">
-        <link href="../assets/font/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
-        <link rel="stylesheet" href="../assets/css/header.css">
-        <link rel="stylesheet" href="../assets/css/side-bar.css">
-        <link rel="stylesheet" href="../assets/css/admin/book-details.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/bootstrap-4.6.1-dist/css/bootstrap.min.css">
+        <link href="<%=request.getContextPath()%>/assets/font/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/side-bar.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/admin/book-details.css">
         <title>Book details</title>
     </head>
     <body>
@@ -36,7 +37,7 @@
                 <div class="pl-3 pr-3 side-bar position-fixed">
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link active">
+                            <a href="BookList" class="nav-link active">
                                 <i class="fas fa-book-open"></i>
                                 Books
                             </a>
@@ -55,45 +56,45 @@
                         </li>
                     </ul>
                 </div>
-
+                <% Book book = (Book) request.getAttribute("book"); %>
                 <div class="flex-fill" style="margin-left: 300px;">
                     <div class="container-fluid pr-4 pt-2">
                         <div class="shadow p-3 mb-5 bg-white rounded about-book">
                             <h3>Book information</h3>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">ID</h5>
-                                <p>1</p>
+                                <p><%=book.getId()%></p>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Name</h5>
-                                <p>Đắc nhâm tâm</p>
+                                <p><%=book.getName()%></p>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Summary</h5>
-                                <p>Quyển sách Đắc nhắn tâm là cuốn sách “đầu tiên và hay nhất mọi thời đại về nghệ thuật giao tiếp và ứng xử”, quyển sách đã từng mang đến thành công và hạnh phúc cho hàng triệu người trên khắp thế giới.</p>
+                                <p><%=book.getSummary()%></p>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Number of pages</h5>
-                                <p>100</p>
+                                <p><%=book.getNumberOfPages()%></p>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Language</h5>
-                                <p>Tiếng Việt</p>
+                                <p><%=book.getLanguage()%></p>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">ISBN</h5>
-                                <p>11111 22222</p>
+                                <p><%=book.getIsbn()%></p>
                             </div>
                         </div>
                         <div class="shadow p-3 mb-5 bg-white rounded about-book">
                             <h3>Author information</h3>
-                            <div class="d-flex flex-row">
-                                <h5 class="book-attribute">ID</h5>
-                                <p>1</p>
-                            </div>
-                            <div class="d-flex flex-row">
+                            <div class="d-flex flex-row mb-2">
                                 <h5 class="book-attribute">Full name</h5>
-                                <p>Đắc nhâm tâm</p>
+                                <select id="list-authors" class="form-select mb-1" aria-label="Default select example">
+                                    <option value="1">Nguyễn Văn A (ID - 2)</option>
+                                    <option value="1">Nguyễn Văn A (ID - 2)</option>
+                                    <option value="1">Nguyễn Văn A (ID - 2)</option>
+                                </select>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Biography</h5>
@@ -108,19 +109,19 @@
                             <h3>Publisher information</h3>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">ID</h5>
-                                <p>1</p>
+                                <p><%=book.getPublisher().getId()%></p>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Name</h5>
-                                <p>Đắc nhâm tâm</p>
+                                <p><%=book.getPublisher().getName()%></p>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Address</h5>
-                                <p>Sinh sống ở Mỹ</p>
+                                <p><%=book.getPublisher().getAddress()%></p>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Email</h5>
-                                <p>connectme@gmail.com</p>
+                                <p><%=book.getPublisher().getEmail()%></p>
                             </div>
                         </div>
                         
@@ -130,5 +131,9 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            var book = "<%= ((Book) request.getAttribute("book")).getName()%>";
+            console.log(book);
+        </script>
     </body>
 </html>

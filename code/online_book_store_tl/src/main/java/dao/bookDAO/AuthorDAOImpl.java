@@ -32,7 +32,7 @@ public class AuthorDAOImpl implements AuthorDAO{
 
     @Override
     public Author getAuthorById(int authorId) {
-        Author author = null;
+        Author author = new Author();
         String sql = "SELECT * FROM `author` WHERE `ID` = ?";
         
         try {
@@ -42,7 +42,7 @@ public class AuthorDAOImpl implements AuthorDAO{
             
             ResultSet resultSet = statement.executeQuery();
             
-            while(resultSet.next()) {
+            if (resultSet.next()) {
                 int id = resultSet.getInt("ID");
                 String fullName = resultSet.getString("FullName");
                 String biography = resultSet.getString("Biography");
