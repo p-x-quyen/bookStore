@@ -33,8 +33,10 @@ public class BookDetails extends HttpServlet {
             String username = (String)httpSession.getAttribute("username");
             if (username.equalsIgnoreCase("admin")) {
                 int id = Integer.parseInt(request.getParameter("id"));
+                boolean hasBookItem = bookDAO.hasBookItem(id);
                 Book book = bookDAO.getBookById(id);
                 request.setAttribute("book", book);
+                request.setAttribute("hasBookItem", hasBookItem);
 //                out.println(book.toString());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-details.jsp");
                 dispatcher.forward(request, response);   

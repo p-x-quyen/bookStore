@@ -10,4 +10,5 @@ import model.book.Book;
 public interface BookDAO {
     List<Book> getAllBooks();
     Book getBookById(int bookId);
+    boolean hasBookItem(int bookId);
 }

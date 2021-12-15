@@ -68,9 +68,7 @@
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
-                            <button type="button" class="btn-primary ml-2 px-2 border-0 rounded btn-add">
-                                Add book
-                            </button>
+                            <a class="btn btn-primary ml-1" href="<%=request.getContextPath()%>/admin/book-create.jsp" role="button">Add book</a>
                         </div>
                         <table class="table table-bordered table-striped mb-2 book-table">
                             <thead>

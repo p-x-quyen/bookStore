@@ -4,6 +4,8 @@
     Author     : Administrator
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="model.book.Author"%>
 <%@page import="model.book.Book"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -56,7 +58,9 @@
                         </li>
                     </ul>
                 </div>
-                <% Book book = (Book) request.getAttribute("book"); %>
+                <%  Book book = (Book) request.getAttribute("book"); 
+                    boolean hasBookItem = (boolean) request.getAttribute("hasBookItem");
+                %>
                 <div class="flex-fill" style="margin-left: 300px;">
                     <div class="container-fluid pr-4 pt-2">
                         <div class="shadow p-3 mb-5 bg-white rounded about-book">
@@ -91,18 +95,15 @@
                             <div class="d-flex flex-row mb-2">
                                 <h5 class="book-attribute">Full name</h5>
                                 <select id="list-authors" class="form-select mb-1" aria-label="Default select example">
-                                    <option value="1">Nguyễn Văn A (ID - 2)</option>
-                                    <option value="1">Nguyễn Văn A (ID - 2)</option>
-                                    <option value="1">Nguyễn Văn A (ID - 2)</option>
                                 </select>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Biography</h5>
-                                <p>Sinh sống ở Mỹ</p>
+                                <p id="author-biography" ></p>
                             </div>
                             <div class="d-flex flex-row">
                                 <h5 class="book-attribute">Address</h5>
-                                <p>Mỹ</p>
+                                <p id="author-address"></p>
                             </div>
                         </div>
                         <div class="shadow p-3 mb-5 bg-white rounded about-book">
@@ -124,16 +125,54 @@
                                 <p><%=book.getPublisher().getEmail()%></p>
                             </div>
                         </div>
-                        
-                        <a class="btn btn-primary mt-0 mb-2" href="#" role="button">Add book item</a>
-                        <a class="btn btn-primary mt-0 mb-2" href="#" role="button">View book item</a>
+                        <%  if (hasBookItem) { 
+                        %>
+                        <a class="btn btn-primary mt-0 mb-2 view-book-item-btn" href="#" role="button">View book item</a>
+                        <%
+                            } else {
+                        %>
+                        <a class="btn btn-primary mt-0 mb-2 add-book-item-btn" href="#" role="button">Add book item</a>        
+                        <%
+                            }
+                        %>
                     </div>
                 </div>
             </div>
         </div>
+        <script src="<%=request.getContextPath()%>/assets/js/jquery-3.5.1.min.js"></script>
         <script type="text/javascript">
-            var book = "<%= ((Book) request.getAttribute("book")).getName()%>";
-            console.log(book);
+            var authors = [];
+            <%  List<Author> listAuthors = book.getListAuthors();
+                for (int i = 0; i < listAuthors.size(); i++) { %>
+                    $('#list-authors').append($('<option>', {
+                        value: <%=i%>,
+                        text: "<%=listAuthors.get(i).getFullName()%>" + " (ID - " + "<%=listAuthors.get(i).getId()%>" + ")"
+                    }));
+                    
+                    authors[<%=i%>] = {
+                        "id": "<%=listAuthors.get(i).getId()%>",
+                        "fullName": "<%=listAuthors.get(i).getFullName()%>",
+                        "biography": "<%=listAuthors.get(i).getBiography()%>",
+                        "address": "<%=listAuthors.get(i).getAddress()%>"
+                    };
+            <%
+                    if (i == 0) {
+            %>
+                        $('#author-biography').text("<%=listAuthors.get(i).getBiography()%>");
+                        $('#author-address').text("<%=listAuthors.get(i).getAddress()%>");
+            <%
+                    }
+                }
+            %>
+            
+//            console.log(authors)
+            $('#list-authors').on('change', function () {
+                var index = $("#list-authors").val();
+//                console.log(index)
+                $('#author-biography').text(authors[index]["biography"]);
+                $('#author-address').text(authors[index]["address"]);
+            });
+            
         </script>
     </body>
 </html>
