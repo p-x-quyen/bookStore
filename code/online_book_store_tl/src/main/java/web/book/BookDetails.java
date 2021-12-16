@@ -31,6 +31,7 @@ public class BookDetails extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             HttpSession httpSession = request.getSession(false);
             String username = (String)httpSession.getAttribute("username");
+            
             if (username.equalsIgnoreCase("admin")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 boolean hasBookItem = bookDAO.hasBookItem(id);

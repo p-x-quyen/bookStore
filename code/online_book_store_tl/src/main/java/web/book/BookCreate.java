@@ -1,45 +1,35 @@
 package web.book;
 
-import dao.bookDAO.BookDAO;
-import dao.bookDAO.BookDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.book.Book;
 
 /**
  *
  * @author Administrator
  */
-public class BookList extends HttpServlet {
-    private BookDAO bookDAO;
-    
-    @Override
-    public void init() {
-        this.bookDAO = new BookDAOImpl();
-    }
-    
+public class BookCreate extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            HttpSession httpSession = request.getSession(false);
-            String username = (String)httpSession.getAttribute("username");
-            
-            if (username.equalsIgnoreCase("admin")) {
-                List<Book> listBooks = bookDAO.getAllBooks();
-    //            out.println(listBooks.get(0).toString());
-                request.setAttribute("listBooks", listBooks);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-list.jsp");
-                dispatcher.forward(request, response);   
-            }
+            /* TODO output your page here. You may use following sample code. */
+            RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-create.jsp");
+            dispatcher.forward(request, response);
         }
     }
 

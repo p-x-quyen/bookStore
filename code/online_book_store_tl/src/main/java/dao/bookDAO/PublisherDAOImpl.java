@@ -52,7 +52,7 @@ public class PublisherDAOImpl implements PublisherDAO{
             resultSet.close();
             statement.close();
         } catch (SQLException ex) {
-            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PublisherDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return publisher;

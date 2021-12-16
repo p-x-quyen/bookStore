@@ -68,7 +68,7 @@
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
-                            <a class="btn btn-primary ml-1" href="<%=request.getContextPath()%>/admin/book-create.jsp" role="button">Add book</a>
+                            <a class="btn btn-primary ml-1" href="BookCreate" role="button">New book</a>
                         </div>
                         <table class="table table-bordered table-striped mb-2 book-table">
                             <thead>
@@ -77,7 +77,7 @@
                                         ID
                                     </th>
                                     <th class="border-bottom-0">
-                                        Tên sách
+                                        Name
                                     </th>
                                     <th class="border-bottom-0">
                                         ISBN
@@ -86,11 +86,11 @@
                                         Language
                                     </th>
                                     <th class="border-bottom-0">
-                                        Nhà xuất bản
+                                        Publisher
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="my-table" class="">
+                            <tbody id="my-table">
                                 <%  ArrayList<Book> listBooks = (ArrayList<Book>) request.getAttribute("listBooks");
                                     for (Book book:listBooks) {
                                 %>
@@ -117,10 +117,41 @@
                                     }
                                 %>
                             </tbody>
+                            <tbody id="search-result" style="display: none"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+        <script src="<%=request.getContextPath()%>/assets/js/jquery-3.5.1.min.js"></script>
+        <script type="text/javascript">
+            $(".btn-search").click(function() {
+                var bookName = $(".input-search").val().trim();
+//                console.log(bookName);
+                if (bookName !== "") {
+                    $.get("Search", {
+                        "object": "book",
+                        "value": bookName
+                    }, function(result) {
+//                        console.log(result);
+                        $("#my-table").hide();
+                        $("#search-result tr").remove();
+                        $("#search-result").append(result);
+                        $("#search-result").show();
+                    });
+                } else {
+                    alert("Enter book name to search");
+                }
+            });
+            
+            $(".input-search").keyup(function() {
+                var bookName = $(".input-search").val();
+//                console.log(bookName);
+                if (bookName.trim() === "") {
+                    $("#my-table").show();
+                    $("#search-result").hide();
+                } 
+            });
+        </script>
     </body>
 </html>

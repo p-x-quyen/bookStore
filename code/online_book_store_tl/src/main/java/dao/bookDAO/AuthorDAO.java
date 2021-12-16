@@ -10,4 +10,6 @@ import model.book.Author;
 public interface AuthorDAO {
     Author getAuthorById(int authorId);
     List<Author> getAuthorsByBookId(int bookId);
+    List<Author> searchAuthorByName(String authorName);
+    List<Author> getAllAuthors();
 }

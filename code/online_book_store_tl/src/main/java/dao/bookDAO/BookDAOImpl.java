@@ -124,4 +124,36 @@ public class BookDAOImpl implements BookDAO{
         
         return false;
     }
+
+    @Override
+    public List<Book> searchBookByName(String bookName) {
+        List<Book> listBooks = new ArrayList<>();
+        String sql = "SELECT * FROM `book` WHERE `Name` LIKE ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, "%" + bookName + "%");
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                int publisherID = resultSet.getInt("PublisherID");
+                String name = resultSet.getString("Name");
+                String summary = resultSet.getString("Summary");
+                int numberOfPages = resultSet.getInt("NumberOfPages");
+                String language = resultSet.getString("Language");
+                String isbn = resultSet.getString("ISBN");
+                
+                List<Author> listAuthors = authorDAO.getAuthorsByBookId(id);
+                Publisher publisher = publisherDAO.getPublisherById(publisherID);
+                
+                Book book = new Book(id, name, summary, numberOfPages, language, isbn, listAuthors, publisher);
+                listBooks.add(book);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listBooks;
+    }
 }

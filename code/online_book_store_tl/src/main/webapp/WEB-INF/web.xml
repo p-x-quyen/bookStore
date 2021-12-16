@@ -12,6 +12,14 @@
         <servlet-name>BookDetails</servlet-name>
         <servlet-class>web.book.BookDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Search</servlet-name>
+        <servlet-class>web.search.Search</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookCreate</servlet-name>
+        <servlet-class>web.book.BookCreate</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -23,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>BookDetails</servlet-name>
         <url-pattern>/BookDetails/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Search</servlet-name>
+        <url-pattern>/Search/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookCreate</servlet-name>
+        <url-pattern>/BookCreate/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
