@@ -12,4 +12,5 @@ public interface BookDAO {
     Book getBookById(int bookId);
     boolean hasBookItem(int bookId);
     List<Book> searchBookByName(String bookName);
+    boolean createBook(Book book);
 }

@@ -156,4 +156,49 @@ public class BookDAOImpl implements BookDAO{
         
         return listBooks;
     }
+
+    @Override
+    public boolean createBook(Book book) {
+        String sql = "INSERT INTO `book` (`PublisherID`, `Name`, `Summary`, `NumberOfPages`, `Language`, `ISBN`) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, book.getPublisher().getId());
+            statement.setString(2, book.getName());
+            statement.setString(3, book.getSummary());
+            statement.setInt(4, book.getNumberOfPages());
+            statement.setString(5, book.getLanguage());
+            statement.setString(6, book.getIsbn());
+            statement.executeUpdate();
+            ResultSet generatedKeys  = statement.getGeneratedKeys();
+            if(generatedKeys.next()) {
+                int bookId = generatedKeys.getInt(1);
+                List<Author> listAuthors = book.getListAuthors();
+                for (int i = 0; i < listAuthors.size(); i++) {
+                    sql = "INSERT INTO `book_author` (`BookID`, `AuthorID`) VALUES (?, ?)";
+                    statement = connection.prepareStatement(sql);
+                    statement.setInt(1, bookId);
+                    statement.setInt(2, listAuthors.get(i).getId());
+                    boolean rowInserted = statement.executeUpdate() > 0;
+                    if (!rowInserted) {
+                        generatedKeys.close();
+                        statement.close();
+                        return false;
+                    }
+                }
+                generatedKeys.close();
+                statement.close();
+                return true;
+            } else {
+                generatedKeys.close();
+                statement.close();
+                return false;
+            }
+
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
 }

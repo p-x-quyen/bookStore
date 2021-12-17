@@ -64,28 +64,27 @@
                         <div class="shadow p-3 mb-5 bg-white rounded">
                             <h3>Book information</h3>
                             <div class="form-group row">
-                                <label for="name" class="col-sm-5 h5 m-0 d-flex align-items-center">Name</label>
+                                <label for="book-name" class="col-sm-5 h5 m-0 d-flex align-items-center">Name</label>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="name" name="name">
+                                    <input type="text" class="form-control" id="book-name">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="summary" class="col-sm-5 h5 m-0 d-flex align-items-center">Summary</label>
+                                <label for="book-summary" class="col-sm-5 h5 m-0 d-flex align-items-center">Summary</label>
                                 <div class="col-sm-7">
-                                    <textarea class="form-control" id="summary" name="summary"></textarea>
+                                    <textarea class="form-control" id="book-summary"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="number-of-pages" class="col-sm-5 h5 m-0 d-flex align-items-center">Number of pages</label>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="number-of-pages" name="number-of-pages">
+                                    <input type="text" class="form-control" id="number-of-pages">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="language" class="col-sm-5 h5 m-0 d-flex align-items-center">Language</label>
+                                <label for="book-language" class="col-sm-5 h5 m-0 d-flex align-items-center">Language</label>
                                 <div class="col-sm-7">
-                                    <select class="custom-select" id="language" required name="language">
-                                        <option selected disabled value="">---Language---</option>
+                                    <select class="custom-select" id="book-language">
                                         <option value="Tiếng Việt">Tiếng Việt</option>
                                         <option value="Tiếng Anh">Tiếng Anh</option>
                                     </select>
@@ -94,7 +93,7 @@
                             <div class="form-group row">
                                 <label for="isbn" class="col-sm-5 h5 m-0 d-flex align-items-center">ISBN</label>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="isbn" name="isbn">
+                                    <input type="text" class="form-control" id="isbn">
                                 </div>
                             </div>
                         </div>
@@ -187,7 +186,7 @@
                             <div class="form-group row">
                                 <label for="publisher" class="col-sm-5 h5 m-0 d-flex align-items-center">Name</label>
                                 <div class="col-sm-7">
-                                    <select class="custom-select" id="list-publishers" required name="publisher">
+                                    <select class="custom-select" id="list-publishers">
                                     </select>
                                 </div>
                             </div>
@@ -200,7 +199,7 @@
                                 <p class="col-sm-7 my-1" id="publisher-email"></p>
                             </div>
                         </div>
-                        <button class="btn btn-primary mb-2 float-right">Create book</button>
+                        <div class="btn btn-primary mb-2 float-right create-book-btn">Create book</div>
                     </div>
                 </div>
             </div>
@@ -208,6 +207,7 @@
         <script src="<%=request.getContextPath()%>/assets/js/jquery-3.5.1.min.js"></script>
         <script type="text/javascript">
             // AUTHOR
+            var listAuthorIds = [];
             function deleteAuthorEvent() {
                 $(".btn-delete-author").click(function() {
                     var addedId = $(this).closest("tr").find('td:eq(0)').text().trim();
@@ -248,7 +248,6 @@
                 });
             }
             
-            var listAuthorIds = [];
             $(".btn-search").click(function() {
                 var authorName = $(".input-search").val().trim();
                 if (authorName !== "") {
@@ -344,6 +343,65 @@
                 $('#publisher-email').text(publishers[index]["email"]);
                 $('#publisher-address').text(publishers[index]["address"]);
             });
+            
+            // BOOK
+            $(".create-book-btn").click(function() {
+                var bookName = $("#book-name").val().trim();
+                if (bookName === "") {
+                    alert("Enter the name of the book");
+                    return;
+                }
+                var bookSummary = $("#book-summary").val().trim();
+                if (bookSummary === "") {
+                    alert("Enter the summary of the book");
+                    return;
+                }
+                var numberOfPages = $("#number-of-pages").val().trim();
+                if (numberOfPages === "" || isNaN(numberOfPages)) {
+                    alert("Enter the number of pages of the book");
+                    return;
+                }
+                var bookLanguage = $("#book-language").val().trim();
+                if (bookLanguage === "") {
+                    alert("Select the language of the book");
+                    return;
+                }
+                var isbn = $("#isbn").val().trim();
+                if (isbn === "") {
+                    alert("Enter the isbn of the book");
+                    return;
+                }
+
+                if (listAuthorIds.length === 0) {
+                    alert("Select authors");
+                    return;
+                }
+
+                var publiserId = $("#list-publishers").val().trim();
+                if (publiserId === "" || isNaN(publiserId)) {
+                    alert("Select the publiser of the book");
+                    return;
+                }
+                
+                $.post("BookCreate", {
+                    "action": "create",
+                    "bookName": bookName,
+                    "bookSummary": bookSummary,
+                    "numberOfPages": numberOfPages,
+                    "bookLanguage": bookLanguage,
+                    "isbn": isbn,
+                    "listAuthorIds": listAuthorIds.join(";"),
+                    "publisherId": publiserId
+                }, function(result) {
+                    var direct = confirm("Result: " + result + "\nDo you want to move to book list ?");
+                    if (direct === true) {
+                        console.log(confirm)
+                        document.location.href = "BookList";
+                    } else {
+                        return;
+                    }
+                });
+            })
         </script>
     </body>
 </html>

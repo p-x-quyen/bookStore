@@ -173,7 +173,6 @@
                 $('#author-address').text(authors[index]["address"]);
             });
             
-            
         </script>
     </body>
 </html>

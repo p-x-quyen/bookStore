@@ -171,5 +171,10 @@ public class AuthorDAOImpl implements AuthorDAO{
             return false;
         }
     }
+
+    @Override
+    public boolean checkExistId(int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
