@@ -68,7 +68,10 @@
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
-                            <a class="btn btn-primary ml-1" href="BookCreate" role="button">New book</a>
+                            <form action="BookCreate"method="POST">
+                                <input name="action" type="hidden" value="view" />
+                                <button  type="submit" class="btn btn-primary ml-1" id="new-book-btn"role="button">New book</button>
+                            </form>
                         </div>
                         <table class="table table-bordered table-striped mb-2 book-table">
                             <thead>
@@ -152,6 +155,7 @@
                     $("#search-result").hide();
                 } 
             });
+            
         </script>
     </body>
 </html>

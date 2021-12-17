@@ -1,5 +1,6 @@
 package dao.bookDAO;
 
+import java.util.List;
 import model.book.Publisher;
 
 /**
@@ -8,4 +9,5 @@ import model.book.Publisher;
  */
 public interface PublisherDAO {
     Publisher getPublisherById(int publisherId);
+    List<Publisher> getAllPublishers();
 }

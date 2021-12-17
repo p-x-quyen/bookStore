@@ -2,32 +2,28 @@ package web.book;
 
 import dao.bookDAO.AuthorDAO;
 import dao.bookDAO.AuthorDAOImpl;
-import dao.bookDAO.PublisherDAO;
-import dao.bookDAO.PublisherDAOImpl;
+import dao.bookDAO.BookDAO;
+import dao.bookDAO.BookDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.book.Publisher;
+import model.book.Author;
 
 /**
  *
  * @author Administrator
  */
-public class BookCreate extends HttpServlet {
+public class AuthorCreate extends HttpServlet {
 
     private AuthorDAO authorDAO;
-    private PublisherDAO publisherDAO;
     
     @Override
     public void init() {
         this.authorDAO = new AuthorDAOImpl();
-        this.publisherDAO = new PublisherDAOImpl();
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -38,12 +34,14 @@ public class BookCreate extends HttpServlet {
             String username = (String)httpSession.getAttribute("username");
             
             if (username.equalsIgnoreCase("admin")) {
-                if (request.getParameter("action").equalsIgnoreCase("view")) {
-                    List<Publisher> listPublishers = publisherDAO.getAllPublishers();
-                    request.setAttribute("listPublishers", listPublishers);
-                    RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-create.jsp");
-                    dispatcher.forward(request, response);
-                }
+                String fullName = request.getParameter("fullName");
+                String address = request.getParameter("address");
+                String biography = request.getParameter("biography");
+                
+                Author author = new Author(fullName, biography, address);
+                boolean result = authorDAO.createAuthor(author);
+                
+                out.println(result == true ? "success" : "error");
             }
         }
     }

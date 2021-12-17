@@ -20,6 +20,10 @@
         <servlet-name>BookCreate</servlet-name>
         <servlet-class>web.book.BookCreate</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AuthorCreate</servlet-name>
+        <servlet-class>web.book.AuthorCreate</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>BookCreate</servlet-name>
         <url-pattern>/BookCreate/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AuthorCreate</servlet-name>
+        <url-pattern>/AuthorCreate/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

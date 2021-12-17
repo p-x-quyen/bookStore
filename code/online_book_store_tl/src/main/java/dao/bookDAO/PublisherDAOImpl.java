@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.book.Author;
@@ -56,6 +58,36 @@ public class PublisherDAOImpl implements PublisherDAO{
         }
         
         return publisher;
+    }
+
+    @Override
+    public List<Publisher> getAllPublishers() {
+        List<Publisher> listPublishers = new ArrayList<>();
+        String sql = "SELECT * FROM `publisher`";
+        
+        try {
+            
+            PreparedStatement statement = connection.prepareStatement(sql);
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String name = resultSet.getString("Name");
+                String address = resultSet.getString("Address");
+                String email = resultSet.getString("Email");
+                
+                Publisher publisher = new Publisher(id, name, address, email);
+                listPublishers.add(publisher);
+            }
+            
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PublisherDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listPublishers;
     }
     
 }

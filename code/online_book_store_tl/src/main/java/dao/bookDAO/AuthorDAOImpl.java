@@ -151,5 +151,25 @@ public class AuthorDAOImpl implements AuthorDAO{
         
         return listAuthors;
     }
+
+    @Override
+    public boolean createAuthor(Author author) {
+        String sql = "INSERT INTO `author` (`FullName`, `Biography`, `Address`) VALUES (?, ?, ?)";
+        try {
+            
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, author.getFullName());
+            statement.setString(2, author.getBiography());
+            statement.setString(3, author.getAddress());
+            
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            
+            return rowInserted;
+        } catch (SQLException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
     
 }

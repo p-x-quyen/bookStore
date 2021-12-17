@@ -4,6 +4,9 @@
     Author     : Administrator
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="model.book.Publisher"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -105,34 +108,34 @@
                                 <button type="button" class="btn-primary px-3 border-0 rounded list-all-authors-btn ml-1" style="box-shadow: none!important;">
                                     List all authors
                                 </button>
-                                <button type="button" class="btn-primary px-3 border-0 rounded create-author-btn ml-1" style="box-shadow: none!important;">
+                                <button type="button" class="btn-primary px-3 border-0 rounded new-author-btn ml-1" style="box-shadow: none!important;">
                                     New author
                                 </button>
                             </div>
                             <div class="d-flex flex-column mb-2 create-author-form" style="display: none!important">
                                 <div class="form-group row">
-                                    <label for="full-name" class="col-sm-5 h5 m-0 d-flex align-items-center">Full name</label>
+                                    <label for="author-full-name" class="col-sm-5 h5 m-0 d-flex align-items-center">Full name</label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="full-name" name="full-name">
+                                        <input type="text" class="form-control" id="author-full-name">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="address" class="col-sm-5 h5 m-0 d-flex align-items-center">Address</label>
+                                    <label for="author-address" class="col-sm-5 h5 m-0 d-flex align-items-center">Address</label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="address" name="address">
+                                        <input type="text" class="form-control" id="author-address">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="biography" class="col-sm-5 h5 m-0 d-flex align-items-center">Biography</label>
+                                    <label for="author-biography" class="col-sm-5 h5 m-0 d-flex align-items-center">Biography</label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="biography" name="biography">
+                                        <textarea type="text" class="form-control" id="author-biography"></textarea>
                                     </div>
                                 </div>
                                 <div>
                                     <button type="button" class="btn-primary px-3 border-0 rounded cancel-btn ml-1 float-right" style="box-shadow: none!important;">
-                                        Cancel
+                                        Cancel creating author
                                     </button>
-                                    <button type="button" class="btn-primary px-3 border-0 rounded confirm-btn ml-1 float-right" style="box-shadow: none!important;">
+                                    <button type="button" class="btn-primary px-3 border-0 rounded confirm-btn ml-1 float-right create-author-btn" style="box-shadow: none!important;">
                                         Create author
                                     </button>
                                 </div>
@@ -184,20 +187,17 @@
                             <div class="form-group row">
                                 <label for="publisher" class="col-sm-5 h5 m-0 d-flex align-items-center">Name</label>
                                 <div class="col-sm-7">
-                                    <select class="custom-select" id="publisher" required name="publisher">
-                                        <option selected disabled value="">---Publisher---</option>
-                                        <option value="1">ID - 1: Tiếng Việt</option>
-                                        <option value="2">ID - 2: Tiếng Việt</option>
+                                    <select class="custom-select" id="list-publishers" required name="publisher">
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="publisher-address" class="col-sm-5 h5 m-0 d-flex align-items-center">Address</label>
-                                <p class="col-sm-7 my-1" id="publisher-address">None</p>
+                                <p class="col-sm-7 my-1" id="publisher-address"></p>
                             </div>
                             <div class="form-group row">
                                 <label for="publisher-email" class="col-sm-5 h5 m-0 d-flex align-items-center">Email</label>
-                                <p class="col-sm-7 my-1" id="publisher-address">None</p>
+                                <p class="col-sm-7 my-1" id="publisher-email"></p>
                             </div>
                         </div>
                         <button class="btn btn-primary mb-2 float-right">Create book</button>
@@ -207,6 +207,7 @@
         </div>
         <script src="<%=request.getContextPath()%>/assets/js/jquery-3.5.1.min.js"></script>
         <script type="text/javascript">
+            // AUTHOR
             function deleteAuthorEvent() {
                 $(".btn-delete-author").click(function() {
                     var addedId = $(this).closest("tr").find('td:eq(0)').text().trim();
@@ -279,12 +280,69 @@
                 });
             });
             
-            $(".create-author-btn").click(function() {
+            $(".new-author-btn").click(function() {
                 $(".create-author-form").show();
+                $("#author-full-name").focus();
             });
             
             $(".cancel-btn").click(function() {
                 $(".create-author-form").attr("style", "display: none!important");
+                $("#author-full-name").val("");
+                $("#author-address").val("");
+                $("#author-biography").val("");
+            });
+            
+            $(".create-author-btn").click(function() {
+                var fullName = $("#author-full-name").val().trim();
+                var address = $("#author-address").val().trim();
+                var biography = $("#author-biography").val().trim();
+                console.log(fullName, address, biography);
+                if (fullName === "" || address === "" || biography === "") {
+                    alert("The information of the author can be empty");
+                } else {
+                    $.post("AuthorCreate", {
+                        "fullName": fullName,
+                        "address": address,
+                        "biography": biography
+                    }, function(result) {
+                        alert(result);
+                        $("#author-full-name").val("");
+                        $("#author-address").val("");
+                        $("#author-biography").val("");
+                        $(".create-author-form").attr("style", "display: none!important");
+                    });
+                }
+            })
+            
+            // PUBLISHER
+            var publishers = [];
+            <%  List<Publisher> listPublishers = (ArrayList<Publisher>) request.getAttribute("listPublishers");
+                for (int i = 0; i < listPublishers.size(); i++) { %>
+                    $('#list-publishers').append($('<option>', {
+                        value: <%=listPublishers.get(i).getId()%>,
+                        text: "<%=listPublishers.get(i).getName()%>" + " (ID - " + "<%=listPublishers.get(i).getId()%>" + ")"
+                    }));
+                    
+                    publishers[<%=listPublishers.get(i).getId()%>] = {
+                        "id": "<%=listPublishers.get(i).getId()%>",
+                        "name": "<%=listPublishers.get(i).getName()%>",
+                        "address": "<%=listPublishers.get(i).getAddress()%>",
+                        "email": "<%=listPublishers.get(i).getEmail()%>"
+                    };
+            <%
+                    if (i == 0) {
+            %>
+                        $('#publisher-address').text("<%=listPublishers.get(i).getAddress()%>");
+                        $('#publisher-email').text("<%=listPublishers.get(i).getEmail()%>");
+            <%
+                    }
+                }
+            %>
+            
+            $('#list-publishers').on('change', function () {
+                var index = $("#list-publishers").val();
+                $('#publisher-email').text(publishers[index]["email"]);
+                $('#publisher-address').text(publishers[index]["address"]);
             });
         </script>
     </body>

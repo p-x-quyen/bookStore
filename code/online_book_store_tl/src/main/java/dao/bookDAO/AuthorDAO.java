@@ -12,4 +12,5 @@ public interface AuthorDAO {
     List<Author> getAuthorsByBookId(int bookId);
     List<Author> searchAuthorByName(String authorName);
     List<Author> getAllAuthors();
+    boolean createAuthor(Author author);
 }
