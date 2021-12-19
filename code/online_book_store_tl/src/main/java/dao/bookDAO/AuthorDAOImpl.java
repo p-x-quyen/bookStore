@@ -172,9 +172,5 @@ public class AuthorDAOImpl implements AuthorDAO{
         }
     }
 
-    @Override
-    public boolean checkExistId(int i) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }

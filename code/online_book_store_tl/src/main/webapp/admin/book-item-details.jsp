@@ -4,15 +4,16 @@
     Author     : Administrator
 --%>
 
+<%@page import="model.book.BookItem"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../assets/css/bootstrap-4.6.1-dist/css/bootstrap.min.css">
-        <link href="../assets/font/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
-        <link rel="stylesheet" href="../assets/css/header.css">
-        <link rel="stylesheet" href="../assets/css/side-bar.css">
-        <link rel="stylesheet" href="../assets/css/admin/book-item-details.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/bootstrap-4.6.1-dist/css/bootstrap.min.css">
+        <link href="<%=request.getContextPath()%>/assets/font/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/side-bar.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/admin/book-item-details.css">
         <title>Book item details</title>
     </head>
     <body>
@@ -35,13 +36,13 @@
                 <div class="pl-3 pr-3 side-bar position-fixed">
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link">
+                            <a href="BookList" class="nav-link">
                                 <i class="fas fa-book-open"></i>
                                 Books
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link active">
+                            <a href="BookItemList" class="nav-link active">
                                 <i class="fas fa-store"></i>
                                 Book items
                             </a>
@@ -54,41 +55,43 @@
                         </li>
                     </ul>
                 </div>
-
+                <%  BookItem bookItem = (BookItem) request.getAttribute("bookItem");%>
                 <div class="flex-fill" style="margin-left: 300px;">
                     <div class="container-fluid pr-4 pt-2">
                         <div class="row m-0">
                             <div class="col-lg-4 p-0 rounded text-center">
-                                <img src="../assets/img/book-item/img1.jpg" class="rounded-top book-item-img" alt="book">
+                                <img src="<%=request.getContextPath()%>/uploads/<%=bookItem.getImage()%>" class="rounded-top book-item-img" alt="book">
                                 <input type="file" id="input-img" name="img" accept="image/*" style="display:none" value="img1">
                                 <div id="open-file" class="p-2 bg-primary text-white rounded my-button my-2" style="display:none">Select photo</div>
                             </div>
                             <div class="col-lg-8 pl-3 pr-0">
                                 <div class="d-flex justify-content-between mb-2">
                                     <p>ID</p>
-                                    <p>1</p>
+                                    <p><%=bookItem.getId()%></p>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <p>Book name</p>
-                                    <a href="#" class="text-dark"><i>Đắc nhân tâm</i></a>
+                                    <a href="BookDetails?id=<%=bookItem.getBook().getId()%>" class="text-dark">
+                                        <i><%=bookItem.getBook().getName()%></i>
+                                    </a>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
-                                    <p>Author</p>
-                                    <p>Đắc nhân tâm</p>
-                                </div>
+                                    <p>Language</p>
+                                    <p><%=bookItem.getBook().getLanguage()%></p>
+                                </div>    
                                 <div class="d-flex justify-content-between mb-2">
                                     <p>Publisher</p>
-                                    <p>Đắc nhân tâm</p>
+                                    <p><%=bookItem.getBook().getPublisher().getName()%></p>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
-                                    <p>Price</p>
-                                    <p class="saved-info">1000 VND</p>
-                                    <input type="text" value="1000" class="px-2 change-input" style="display:none">
+                                    <p>Price (VND)</p>
+                                    <p class="saved-info"><%=bookItem.getPrice()%></p>
+                                    <input type="text" value="<%=bookItem.getPrice()%>" class="px-2 change-input" style="display:none">
                                 </div> 
                                 <div class="d-flex justify-content-between mb-2">
-                                    <p>Discount</p>
-                                    <p class="saved-info">90%</p>
-                                    <input type="text" value="90%" class="px-2 change-input" style="display:none">
+                                    <p>Discount (%)</p>
+                                    <p class="saved-info"><%=bookItem.getDiscount()%></p>
+                                    <input type="text" value="<%=bookItem.getDiscount()%>" class="px-2 change-input" style="display:none">
                                 </div>
                                 <div class="mb-2">
                                     <div class="p-2 bg-primary text-white rounded my-button" id="update-btn">Update</div>
@@ -101,7 +104,7 @@
                 </div>
             </div>
         </div>
-        <script src="../assets/js/jquery-3.5.1.min.js"></script>
+        <script src="<%=request.getContextPath()%>/assets/js/jquery-3.5.1.min.js"></script>
         <script>
             $('#open-file').click(function(){ 
                 $('#input-img').trigger('click'); 

@@ -107,8 +107,9 @@ public class BookDAOImpl implements BookDAO{
     }
 
     @Override
-    public boolean hasBookItem(int bookId) {
+    public int hasBookItem(int bookId) {
         String sql = "SELECT * FROM `bookitem` WHERE `BookID` = ?";
+        int bookItemId = 0;
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, bookId);
@@ -116,13 +117,13 @@ public class BookDAOImpl implements BookDAO{
             ResultSet resultSet = statement.executeQuery();
             
             if (resultSet.next()) {
-                return true;
+                bookItemId = resultSet.getInt("ID");
             }
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return false;
+        return bookItemId;
     }
 
     @Override

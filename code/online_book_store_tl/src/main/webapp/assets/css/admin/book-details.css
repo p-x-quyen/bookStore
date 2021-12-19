@@ -11,3 +11,11 @@
     margin-bottom: 25px !important;
 }
 
+.my-button {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.my-button:hover {
+    background-color: #0d69cb !important;
+}

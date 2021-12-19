@@ -2,9 +2,10 @@ package web.book;
 
 import dao.bookDAO.BookDAO;
 import dao.bookDAO.BookDAOImpl;
+import dao.bookDAO.BookItemDAO;
+import dao.bookDAO.BookItemDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,21 +13,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.book.Book;
+import model.book.BookItem;
 
 /**
  *
  * @author Administrator
  */
-public class BookDetails extends HttpServlet {
+public class BookItemDetails extends HttpServlet {
+
     private BookDAO bookDAO;
+    private BookItemDAO bookItemDAO;
     
     @Override
     public void init() {
         this.bookDAO = new BookDAOImpl();
+        this.bookItemDAO = new BookItemDAOImpl();
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, NumberFormatException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             HttpSession httpSession = request.getSession(false);
@@ -34,12 +39,9 @@ public class BookDetails extends HttpServlet {
             
             if (username.equalsIgnoreCase("admin") && request.getParameter("id") != null) {
                 int id = Integer.parseInt(request.getParameter("id"));
-                int hasBookItem = bookDAO.hasBookItem(id);
-                Book book = bookDAO.getBookById(id);
-                request.setAttribute("book", book);
-                request.setAttribute("hasBookItem", hasBookItem);
-//                out.println(book.toString());
-                RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-details.jsp");
+                BookItem bookItem = bookItemDAO.getBookItemById(id);
+                request.setAttribute("bookItem", bookItem);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-item-details.jsp");
                 dispatcher.forward(request, response);   
             }
         }

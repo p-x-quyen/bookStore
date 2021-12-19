@@ -24,6 +24,18 @@
         <servlet-name>AuthorCreate</servlet-name>
         <servlet-class>web.book.AuthorCreate</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BookItemCreate</servlet-name>
+        <servlet-class>web.book.BookItemCreate</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookItemList</servlet-name>
+        <servlet-class>web.book.BookItemList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookItemDetails</servlet-name>
+        <servlet-class>web.book.BookItemDetails</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -47,6 +59,18 @@
     <servlet-mapping>
         <servlet-name>AuthorCreate</servlet-name>
         <url-pattern>/AuthorCreate/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookItemCreate</servlet-name>
+        <url-pattern>/BookItemCreate/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookItemList</servlet-name>
+        <url-pattern>/BookItemList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookItemDetails</servlet-name>
+        <url-pattern>/BookItemDetails/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

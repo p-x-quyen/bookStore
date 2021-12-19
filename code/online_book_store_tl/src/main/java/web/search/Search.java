@@ -4,6 +4,8 @@ import dao.bookDAO.AuthorDAO;
 import dao.bookDAO.AuthorDAOImpl;
 import dao.bookDAO.BookDAO;
 import dao.bookDAO.BookDAOImpl;
+import dao.bookDAO.BookItemDAO;
+import dao.bookDAO.BookItemDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.book.Author;
 import model.book.Book;
+import model.book.BookItem;
 
 /**
  *
@@ -22,11 +25,13 @@ import model.book.Book;
 public class Search extends HttpServlet {
     private BookDAO bookDAO;
     private AuthorDAO authorDAO;
+    private BookItemDAO bookItemDAO;
     
     @Override
     public void init() {
         this.bookDAO = new BookDAOImpl();
         this.authorDAO = new AuthorDAOImpl();
+        this.bookItemDAO = new BookItemDAOImpl();
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -45,6 +50,10 @@ public class Search extends HttpServlet {
                         break;
                     case "author":
                         searchAuthor(value, out, request, response);
+                        break;
+                    case "bookItem":
+                        searchBookItem(value, out, request, response);
+                        break;
                 }
             }
         }
@@ -101,6 +110,28 @@ public class Search extends HttpServlet {
                         "</tr>");
         }
     }
+    
+    private void searchBookItem(String value, PrintWriter out, HttpServletRequest request, HttpServletResponse response) {
+        List<BookItem> listBookItems = bookItemDAO.searchBookItemByName(value);
+        for(BookItem bookItem: listBookItems) {
+            out.println("<tr>\n" +
+                        "<td class=\"align-middle\">\n" +
+                        bookItem.getId() + "\n" +
+                        "</td>\n" +
+                        "<td class=\"align-middle\">\n" +
+                        "<a href=\"BookDetails?id=" + bookItem.getBook().getId() + "\" class=\"text-dark\">\n" +
+                        bookItem.getBook().getName() + "\n" +
+                        "</a>\n" +
+                        "</td>\n" +
+                        "<td class=\"align-middle\">\n" +
+                        "<img src=\"" + request.getContextPath() + "/uploads/" + bookItem.getImage() + "\" class=\"book-item-img\">\n" +
+                        "</td>\n" +
+                        "<td class=\"align-middle\">\n" +
+                        bookItem.getPrice() + "\n" +
+                        "</td>\n" +
+                        "</tr>");
+        }
+    }
   
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -140,5 +171,7 @@ public class Search extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+   
 
 }

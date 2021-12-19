@@ -45,7 +45,7 @@
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link">
+                            <a href="BookItemList" class="nav-link">
                                 <i class="fas fa-store"></i>
                                 Book items
                             </a>
@@ -103,7 +103,7 @@
                                     </td>
                                     <td class="align-middle">
                                         <a href="BookDetails?id=<%=book.getId()%>" class="text-dark">
-                                            <%=book.getName()%>
+                                            <i><%=book.getName()%></i>
                                         </a>
                                     </td>
                                     <td class="align-middle">

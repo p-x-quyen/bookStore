@@ -4,16 +4,18 @@
     Author     : Administrator
 --%>
 
+<%@page import="model.book.BookItem"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="../assets/css/bootstrap-4.6.1-dist/css/bootstrap.min.css">
-        <link href="../assets/font/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
-        <link rel="stylesheet" href="../assets/css/header.css">
-        <link rel="stylesheet" href="../assets/css/side-bar.css">
-        <link rel="stylesheet" href="../assets/css/admin/book-item-list.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/bootstrap-4.6.1-dist/css/bootstrap.min.css">
+        <link href="<%=request.getContextPath()%>/assets/font/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/side-bar.css">
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/admin/book-item-list.css">
         <title>List book items</title>
     </head>
     <body>
@@ -36,13 +38,13 @@
                 <div class="pl-3 pr-3 side-bar position-fixed">
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link">
+                            <a href="BookList" class="nav-link">
                                 <i class="fas fa-book-open"></i>
                                 Books
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link active">
+                            <a href="BookItemList" class="nav-link active">
                                 <i class="fas fa-store"></i>
                                 Book items
                             </a>
@@ -82,70 +84,72 @@
                                         Ảnh
                                     </th>
                                     <th class="border-bottom-0">
-                                        Tác giả
-                                    </th>
-                                    <th class="border-bottom-0">
                                         Giá
                                     </th>
                                 </tr>
                             </thead>
                             <tbody id="my-table" class="">
+                                <%  ArrayList<BookItem> listBookItems = (ArrayList<BookItem>) request.getAttribute("listBookItems");
+                                    for (BookItem bookItem: listBookItems) {
+                                %>
                                 <tr>
                                     <td class="align-middle">
-                                        1
+                                        <%=bookItem.getId()%>
                                     </td>
                                     <td class="align-middle">
-                                        <a href="#" class="text-dark">Đắc nhân tâm</a>
+                                        <a href="BookDetails?id=<%=bookItem.getBook().getId()%>" class="text-dark">
+                                            <i><%=bookItem.getBook().getName()%></i>
+                                        </a>
                                     </td>
                                     <td class="align-middle">
-                                        <img src="../assets/img/book-item/img1.jpg" class="book-item-img">
+                                        <img src="<%=request.getContextPath()%>/uploads/<%=bookItem.getImage()%>" class="book-item-img">
                                     </td>
                                     <td class="align-middle">
-                                        Dale Carnegie
-                                    </td>
-                                    <td class="align-middle">
-                                        10000 VND
+                                        <%=bookItem.getPrice()%>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        1
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="#" class="text-dark">Đắc nhân tâm</a>
-                                    </td>
-                                    <td class="align-middle">
-                                        <img src="../assets/img/book-item/img1.jpg" class="book-item-img">
-                                    </td>
-                                    <td class="align-middle">
-                                        Dale Carnegie
-                                    </td>
-                                    <td class="align-middle">
-                                        10000 VND
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="align-middle">
-                                        1
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="#" class="text-dark">Đắc nhân tâm</a>
-                                    </td>
-                                    <td class="align-middle">
-                                        <img src="../assets/img/book-item/img1.jpg" class="book-item-img">
-                                    </td>
-                                    <td class="align-middle">
-                                        Dale Carnegie
-                                    </td>
-                                    <td class="align-middle">
-                                        10000 VND
-                                    </td>
-                                </tr>
+                                <%
+                                    }
+                                %>
                             </tbody>
+                            <tbody id="search-result" style="display: none"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+                            
+        <script src="<%=request.getContextPath()%>/assets/js/jquery-3.5.1.min.js"></script>
+        <script type="text/javascript">
+            $(".btn-search").click(function() {
+                var bookName = $(".input-search").val().trim();
+//                console.log(bookName);
+                if (bookName !== "") {
+                    $.get("Search", {
+                        "object": "bookItem",
+                        "value": bookName
+                    }, function(result) {
+//                        console.log(result);
+                        $("#my-table").hide();
+                        $("#search-result tr").remove();
+                        $("#search-result").append(result);
+                        $("#search-result").show();
+                    });
+                } else {
+                    alert("Enter book name to search");
+                }
+            });
+            
+            $(".input-search").keyup(function() {
+                var bookName = $(".input-search").val();
+//                console.log(bookName);
+                if (bookName.trim() === "") {
+                    $("#my-table").show();
+                    $("#search-result").hide();
+                } 
+            });
+            
+        </script>
     </body>
 </html>
+

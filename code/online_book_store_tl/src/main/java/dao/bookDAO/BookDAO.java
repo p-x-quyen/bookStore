@@ -10,7 +10,7 @@ import model.book.Book;
 public interface BookDAO {
     List<Book> getAllBooks();
     Book getBookById(int bookId);
-    boolean hasBookItem(int bookId);
+    int hasBookItem(int bookId);
     List<Book> searchBookByName(String bookName);
     boolean createBook(Book book);
 }

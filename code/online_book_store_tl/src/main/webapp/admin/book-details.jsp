@@ -45,7 +45,7 @@
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link">
+                            <a href="BookItemList" class="nav-link">
                                 <i class="fas fa-store"></i>
                                 Book items
                             </a>
@@ -59,7 +59,7 @@
                     </ul>
                 </div>
                 <%  Book book = (Book) request.getAttribute("book"); 
-                    boolean hasBookItem = (boolean) request.getAttribute("hasBookItem");
+                    int hasBookItem = (int) request.getAttribute("hasBookItem");
                 %>
                 <div class="flex-fill" style="margin-left: 300px;">
                     <div class="container-fluid pr-4 pt-2">
@@ -125,19 +125,45 @@
                                 <p><%=book.getPublisher().getEmail()%></p>
                             </div>
                         </div>
-                        <%  if (hasBookItem) { 
+                        <%  if (hasBookItem != 0) { 
                         %>
-                        <a class="btn btn-primary mt-0 mb-2 view-book-item-btn" href="#" role="button">View book item</a>
+                        <a class="btn btn-primary mt-0 mb-2 view-book-item-btn" href="BookItemDetails?id=<%=hasBookItem%>" role="button">
+                            View book item
+                        </a>
                         <%
                             } else {
                         %>
-                        <a class="btn btn-primary mt-0 mb-2 add-book-item-btn" href="#" role="button">Add book item</a>        
+                        <button class="btn btn-primary mt-0 mb-2 new-book-item-btn">New book item</button>        
                         <%
                             }
                         %>
+                        
+                        <form class="shadow p-3 mb-5 bg-white rounded book-item" style="display: none" action="BookItemCreate" method="POST" enctype="multipart/form-data">
+                            <h3>Book Item</h3>
+                            <div class="d-flex flex-row">
+                                <input type="hidden" name="bookId" value="<%=book.getId()%>">
+                                <input type="file" id="input-img" name="img" accept="image/*" style="display:none" value="" required>
+                                <div class="col col-3 pl-0 book-attribute">
+                                    <div id="open-file" class="btn btn-primary mt-0 mb-2 mr-2">Select photo</div>
+                                </div>
+                                <p class="pt-1 img-path">no image selected</p>
+                            </div>
+                            <div class="d-flex flex-row mb-2">
+                                <h5 class="col col-3 pl-0 book-attribute">Price (VND)</h5>
+                                <input type="text" class="px-2 price" placeholder="Price" name="price" required>
+                            </div>
+                            <div class="d-flex flex-row mb-2">
+                                <h5 class="col col-3 pl-0 book-attribute">Discount (%)</h5>
+                                <input type="text" class="px-2 discount" placeholder="Discount (%)" name="discount" value="0">
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="sumbit" class="btn btn-primary mr-1 create-book-item-btn ">Create</button>
+                                <div class="btn btn-primary cancel-btn ">Cancel</div> 
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
+            </div>     
         </div>
         <script src="<%=request.getContextPath()%>/assets/js/jquery-3.5.1.min.js"></script>
         <script type="text/javascript">
@@ -173,6 +199,36 @@
                 $('#author-address').text(authors[index]["address"]);
             });
             
+            $('.new-book-item-btn').click(function() {
+               $(".book-item").show(); 
+               $(".new-book-item-btn").hide();
+            });
+            
+            $('.cancel-btn').click(function() {
+               $(".book-item").hide(); 
+               $(".new-book-item-btn").show(); 
+            });
+            
+            $('#open-file').click(function(){ 
+                $('#input-img').trigger('click');
+            });
+            
+            $('#input-img').on('change', function() {
+                $(".img-path").text($('#input-img').val());
+            });  
+            
+            $('.create-book-item-btn').click(function() {
+               if ($('#input-img').val().trim() === "") {
+                   alert("Select photo");
+               }
+            });
+            
+//            $(".input-search").keyup(function() {
+//                var authorName = $(".input-search").val();
+//                if (authorName.trim() === "") {
+//                    $("#search-result tr").remove();
+//                } 
+//            });
         </script>
     </body>
 </html>
