@@ -97,7 +97,7 @@
                                         <%=bookItem.getId()%>
                                     </td>
                                     <td class="align-middle">
-                                        <a href="BookDetails?id=<%=bookItem.getBook().getId()%>" class="text-dark">
+                                        <a href="BookItemDetails?id=<%=bookItem.getId()%>" class="text-dark">
                                             <i><%=bookItem.getBook().getName()%></i>
                                         </a>
                                     </td>

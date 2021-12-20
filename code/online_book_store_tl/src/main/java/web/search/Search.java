@@ -119,7 +119,7 @@ public class Search extends HttpServlet {
                         bookItem.getId() + "\n" +
                         "</td>\n" +
                         "<td class=\"align-middle\">\n" +
-                        "<a href=\"BookDetails?id=" + bookItem.getBook().getId() + "\" class=\"text-dark\">\n" +
+                        "<a href=\"BookItemDetails?id=" + bookItem.getId() + "\" class=\"text-dark\">\n" +
                         bookItem.getBook().getName() + "\n" +
                         "</a>\n" +
                         "</td>\n" +

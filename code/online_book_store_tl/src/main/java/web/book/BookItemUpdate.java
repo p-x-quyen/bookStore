@@ -1,12 +1,15 @@
 package web.book;
 
+import dao.bookDAO.AuthorDAOImpl;
 import dao.bookDAO.BookDAO;
 import dao.bookDAO.BookDAOImpl;
 import dao.bookDAO.BookItemDAO;
 import dao.bookDAO.BookItemDAOImpl;
+import dao.bookDAO.PublisherDAOImpl;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
@@ -30,14 +33,12 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  *
  * @author Administrator
  */
-public class BookItemCreate extends HttpServlet {
+public class BookItemUpdate extends HttpServlet {
 
-    private BookDAO bookDAO;
     private BookItemDAO bookItemDAO;
     
     @Override
     public void init() {
-        this.bookDAO = new BookDAOImpl();
         this.bookItemDAO = new BookItemDAOImpl();
     }
     
@@ -65,9 +66,10 @@ public class BookItemCreate extends HttpServlet {
 
                 // Process the uploaded items
                 Iterator<FileItem> iter = items.iterator();
+                Iterator<FileItem> iter1 = items.iterator();
                 float price = 0;
                 String discount = "0";
-                String bookId = "0";
+                String bookItemId = "0";
                 while (iter.hasNext()) {
                     FileItem item = iter.next();
 
@@ -76,42 +78,52 @@ public class BookItemCreate extends HttpServlet {
                         String value = item.getString();
                         if (name.equalsIgnoreCase("price")) {
                             price = Float.parseFloat(value);
-//                            System.out.println(value);
+                            System.out.println(value);
                         } else if (name.equalsIgnoreCase("discount")) {
                             if (!"".equalsIgnoreCase(value.trim())) {
                                 discount = value.trim();
-//                                System.out.println(value);
+                                System.out.println(value);
                             } 
-                        } else if (name.equalsIgnoreCase("bookId")) {
-                            bookId = value.trim();
-//                            System.out.println(value);
-                        }
-                    } else {
-                        String fileName =  item.getName();
-                        System.out.println(fileName);
-                        if (fileName == null || fileName.equalsIgnoreCase("")) {
-                            break;
-                        } else {
-    //                        Path path = Paths.get(fileName);
-                            String storePath = servletContext.getRealPath("/uploads");
-                            File uploadFile = new File(storePath + "/" + "img" + bookId + ".jpg");
-                            item.write(uploadFile);
+                        } else if (name.equalsIgnoreCase("bookItemId")) {
+                            bookItemId = value.trim();
+                            System.out.println(value);
                         }
                     }
                 }
+                
+                if (!"0".equalsIgnoreCase(bookItemId)) {
+                    BookItem bookItem = bookItemDAO.getBookItemById(Integer.parseInt(bookItemId));
+                    int bookId = bookItem.getBook().getId();
+                    while (iter1.hasNext()) {
+                        FileItem item = iter1.next();
 
-                if (price != 0 && !bookId.equalsIgnoreCase("0")) {
-                    Book book = bookDAO.getBookById(Integer.parseInt(bookId.trim()));
-                    BookItem bookItem = new BookItem("img" + bookId + ".jpg", price, discount, book);
-                    boolean result = bookItemDAO.createBookItem(bookItem);
+                        if (!item.isFormField()) {
+                            String fileName =  item.getName();
+                            System.out.println(fileName);
+                            if (fileName == null || fileName.equalsIgnoreCase("")) {
+    //                            System.out.println("img null");
+                                break;
+                            } else {
+                                String storePath = servletContext.getRealPath("/uploads");
+                                Path path = Paths.get(storePath + "/" + "img" + bookId + ".jpg");
+                                Files.deleteIfExists(path);
+                                File uploadFile = new File(storePath + "/" + "img" + bookId + ".jpg");
+                                item.write(uploadFile);
+                            }
+                        } 
+                    }
                     
-                    response.sendRedirect("BookItemList");
+                    BookItem bookItemUpdate = new BookItem(bookItem.getId(), "", price, discount, bookItem.getBook());
+//                    System.out.println(bookItemUpdate.toString());
+                    boolean result = bookItemDAO.updateBookItem(bookItemUpdate);
+                    response.sendRedirect("BookItemDetails?id=" + bookItemId);
                 }
+
             }
         } catch (FileUploadException ex) {
-            Logger.getLogger(BookItemCreate.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookItemUpdate.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(BookItemCreate.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookItemUpdate.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -58,11 +58,14 @@
                 <%  BookItem bookItem = (BookItem) request.getAttribute("bookItem");%>
                 <div class="flex-fill" style="margin-left: 300px;">
                     <div class="container-fluid pr-4 pt-2">
-                        <div class="row m-0">
+                        <form class="row m-0" action="BookItemUpdate" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="bookItemId" value="<%=bookItem.getId()%>">
+                            <!--<input type="hidden" name="changeImage" value="false" class="change-image">-->
                             <div class="col-lg-4 p-0 rounded text-center">
                                 <img src="<%=request.getContextPath()%>/uploads/<%=bookItem.getImage()%>" class="rounded-top book-item-img" alt="book">
-                                <input type="file" id="input-img" name="img" accept="image/*" style="display:none" value="img1">
+                                <input type="file" id="input-img" name="img" accept="image/*" style="display:none">
                                 <div id="open-file" class="p-2 bg-primary text-white rounded my-button my-2" style="display:none">Select photo</div>
+                                <p class="pt-1 img-path" style="display:none"></p>
                             </div>
                             <div class="col-lg-8 pl-3 pr-0">
                                 <div class="d-flex justify-content-between mb-2">
@@ -86,20 +89,20 @@
                                 <div class="d-flex justify-content-between mb-2">
                                     <p>Price (VND)</p>
                                     <p class="saved-info"><%=bookItem.getPrice()%></p>
-                                    <input type="text" value="<%=bookItem.getPrice()%>" class="px-2 change-input" style="display:none">
+                                    <input type="text" value="<%=bookItem.getPrice()%>" class="px-2 change-input" style="display:none" name="price" required>
                                 </div> 
                                 <div class="d-flex justify-content-between mb-2">
                                     <p>Discount (%)</p>
                                     <p class="saved-info"><%=bookItem.getDiscount()%></p>
-                                    <input type="text" value="<%=bookItem.getDiscount()%>" class="px-2 change-input" style="display:none">
+                                    <input type="text" value="<%=bookItem.getDiscount()%>" class="px-2 change-input" style="display:none" name="discount">
                                 </div>
                                 <div class="mb-2">
                                     <div class="p-2 bg-primary text-white rounded my-button" id="update-btn">Update</div>
-                                    <div class="p-2 bg-primary text-white rounded my-button" id="confirm-btn" style="display:none">Confirm update</div>
-                                    <div class="p-2 bg-primary text-white rounded my-button" id="cancel-btn" style="display:none">Cancel</div>
+                                    <button class="btn p-2 bg-primary text-white" id="confirm-btn" style="display:none">Confirm update</button>
+                                    <div class="btn p-2 bg-primary text-white rounded my-button" id="cancel-btn" style="display:none">Cancel</div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -116,6 +119,7 @@
                 $('#cancel-btn').show();
                 $('#open-file').show();
                 $('.change-input').show();
+                 $(".img-path").show();
             });
             $('#cancel-btn').click(function(){ 
                 //delete all input and set photo, input again
@@ -125,7 +129,14 @@
                 $('#cancel-btn').hide();
                 $('#open-file').hide();
                 $('.change-input').hide();
+                 $(".img-path").hide();
             });
-        </script>
+            
+            $('#input-img').on('change', function() {
+//               console.log($('#input-img').val()); 
+                $(".img-path").text($('#input-img').val());
+//                $(".change-image").val("true");
+            });
+        </script> 
     </body>
 </html>

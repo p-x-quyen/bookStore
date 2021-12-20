@@ -12,4 +12,5 @@ public interface BookItemDAO {
     boolean createBookItem(BookItem bookItem);
     List<BookItem> getAllBookItems();
     List<BookItem> searchBookItemByName(String bookName);
+    boolean updateBookItem(BookItem bookItem);
 }

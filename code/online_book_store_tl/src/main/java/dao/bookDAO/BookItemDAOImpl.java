@@ -147,5 +147,27 @@ public class BookItemDAOImpl implements BookItemDAO{
         
         return listBookItems;        
     }
+
+    @Override
+    public boolean updateBookItem(BookItem bookItem) {
+        String sql = "UPDATE `bookitem` SET `Price` = ?, `Discount` = ? WHERE `ID` = ?";
+        try {
+            
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setFloat(1, bookItem.getPrice());
+            statement.setString(2, bookItem.getDiscount());
+            statement.setInt(3, bookItem.getId());
+            System.out.println(bookItem.getId());
+            boolean rowInserted = statement.executeUpdate() > 0;
+//            System.out.println(rowInserted);
+            statement.close();
+            
+            return rowInserted;
+        } catch (SQLException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        
+    }
     
 }
