@@ -115,6 +115,9 @@ public class AuthorDAOImpl implements AuthorDAO{
                 Author author = new Author(id, fullName, biography, address);
                 listAuthors.add(author);
             }
+            
+            resultSet.close();
+            statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

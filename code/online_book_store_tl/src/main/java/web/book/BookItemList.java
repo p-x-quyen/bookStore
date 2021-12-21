@@ -40,6 +40,8 @@ public class BookItemList extends HttpServlet {
                 request.setAttribute("listBookItems", listBookItems);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-item-list.jsp");
                 dispatcher.forward(request, response);   
+            } else {
+                out.println("hello " + username);
             }
         }
     }

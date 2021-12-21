@@ -141,6 +141,9 @@ public class BookItemDAOImpl implements BookItemDAO{
                 BookItem bookItem = new BookItem(id, image, price, discount, book);
                 listBookItems.add(bookItem);
             }
+            
+            resultSet.close();
+            statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

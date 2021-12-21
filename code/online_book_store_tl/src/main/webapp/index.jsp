@@ -40,7 +40,7 @@
                             </div>
                         </div>
                     </form>
-                    <a href="#" class="mb-3">Register</a>
+                    <a href="Register" class="mb-3">Register</a>
                 </div>
             </div>
         </div>

@@ -62,7 +62,7 @@
                             <input type="hidden" name="bookItemId" value="<%=bookItem.getId()%>">
                             <!--<input type="hidden" name="changeImage" value="false" class="change-image">-->
                             <div class="col-lg-4 p-0 rounded text-center">
-                                <img src="<%=request.getContextPath()%>/uploads/<%=bookItem.getImage()%>" class="rounded-top book-item-img" alt="book">
+                                <img src="<%=request.getContextPath()%>/uploads/<%=bookItem.getImage()%>" class="rounded-top book-item-img" alt="book" style="width: 100%; height: auto">
                                 <input type="file" id="input-img" name="img" accept="image/*" style="display:none">
                                 <div id="open-file" class="p-2 bg-primary text-white rounded my-button my-2" style="display:none">Select photo</div>
                                 <p class="pt-1 img-path" style="display:none"></p>

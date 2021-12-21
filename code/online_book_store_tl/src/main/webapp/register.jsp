@@ -17,31 +17,31 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="first-name">First name</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="First name" name="firstName">
+                    <input type="text" class="form-control" id="firstName" placeholder="First name" name="firstName" value="1">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="middle-name">Middle name</label>
-                    <input type="text" class="form-control" id="middleName" placeholder="Middle name" name="middleName">
+                    <input type="text" class="form-control" id="middleName" placeholder="Middle name" name="middleName" value="2">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="last-name">Last name</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="Last name" name="lastName">
+                    <input type="text" class="form-control" id="lastName" placeholder="Last name" name="lastName" value="3">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="email">Email</label>
-                    <input type="text" class="form-control" id="email" placeholder="Email" name="email">
+                    <input type="text" class="form-control" id="email" placeholder="Email" name="email" value="4">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="phone">Phone</label>
-                    <input type="text" class="form-control" id="phone" placeholder="phone" name="phone">
+                    <input type="text" class="form-control" id="phone" placeholder="phone" name="phone" value="878 687 8787">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="dateOfBirth">Birthday:</label>
-                    <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control"  required>
+                    <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control"  required value="2017-06-01">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="gender">Gender</label>
@@ -54,29 +54,29 @@
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="city">City</label>
-                    <input type="text" class="form-control" id="city" placeholder="City" name="city">
+                    <input type="text" class="form-control" id="city" placeholder="City" name="city" value="6">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="district">District</label>
-                    <input type="text" class="form-control" id="district" placeholder="District" name="district">
+                    <input type="text" class="form-control" id="district" placeholder="District" name="district" value="7">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="street">Street</label>
-                    <input type="text" class="form-control" id="street" placeholder="Street" name="street">
+                    <input type="text" class="form-control" id="street" placeholder="Street" name="street" value="8">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="houseNumber">House Number</label>
-                    <input type="text" class="form-control" id="houseNumber" placeholder="House Number" name="houseNumber">
+                    <input type="text" class="form-control" id="houseNumber" placeholder="House Number" name="houseNumber" value="9">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+                    <input type="text" class="form-control" id="username" placeholder="Username" name="username" value="abcd">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="password" value="abcd">
                 </div>
             </div>
             <div  class="btn btn-primary register-btn">Register</div>
@@ -156,7 +156,7 @@
                 
                 var houseNumber = $("#houseNumber").val().trim();
                 if (houseNumber === "") {
-                   alert("enter houst number");
+                   alert("enter houst number, if you do not have hous number, please enter 'no'");
                    return;
                 }
                 console.log(houseNumber);
@@ -174,6 +174,30 @@
                    return;
                 }
                 console.log(password);
+                
+                $.post("Register", {
+                    "firstName": firstName,
+                    "middleName": middleName,
+                    "lastName": lastName,
+                    "email": email,
+                    "phone": phone,
+                    "dateOfBirth": dateOfBirth,
+                    "gender": gender,
+                    "city": city,
+                    "district": district,
+                    "street": street,
+                    "houseNumber": houseNumber,
+                    "username": username,
+                    "password": password
+                }, function(result) {
+                    var direct = confirm("Result: " + result + "\nDo you want to move to login page ?");
+                    if (direct === true) {
+                        console.log(confirm);
+                        document.location.href = "Login";
+                    } else {
+                        return;
+                    }
+                });
             });
         </script>
     </body>

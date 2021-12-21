@@ -78,15 +78,15 @@ public class BookItemUpdate extends HttpServlet {
                         String value = item.getString();
                         if (name.equalsIgnoreCase("price")) {
                             price = Float.parseFloat(value);
-                            System.out.println(value);
+//                            System.out.println(value);
                         } else if (name.equalsIgnoreCase("discount")) {
                             if (!"".equalsIgnoreCase(value.trim())) {
                                 discount = value.trim();
-                                System.out.println(value);
+//                                System.out.println(value);
                             } 
                         } else if (name.equalsIgnoreCase("bookItemId")) {
                             bookItemId = value.trim();
-                            System.out.println(value);
+//                            System.out.println(value);
                         }
                     }
                 }
@@ -99,7 +99,7 @@ public class BookItemUpdate extends HttpServlet {
 
                         if (!item.isFormField()) {
                             String fileName =  item.getName();
-                            System.out.println(fileName);
+//                            System.out.println(fileName);
                             if (fileName == null || fileName.equalsIgnoreCase("")) {
     //                            System.out.println("img null");
                                 break;

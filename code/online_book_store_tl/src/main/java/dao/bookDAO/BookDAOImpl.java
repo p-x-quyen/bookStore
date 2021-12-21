@@ -62,6 +62,9 @@ public class BookDAOImpl implements BookDAO{
                 listBooks.add(book);
             }
             
+            resultSet.close();
+            statement.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -119,6 +122,9 @@ public class BookDAOImpl implements BookDAO{
             if (resultSet.next()) {
                 bookItemId = resultSet.getInt("ID");
             }
+            
+            resultSet.close();
+            statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -151,6 +157,9 @@ public class BookDAOImpl implements BookDAO{
                 Book book = new Book(id, name, summary, numberOfPages, language, isbn, listAuthors, publisher);
                 listBooks.add(book);
             }
+            
+            resultSet.close();
+            statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

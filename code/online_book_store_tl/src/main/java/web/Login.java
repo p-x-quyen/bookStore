@@ -1,5 +1,7 @@
 package web;
 
+import dao.customerDAO.CustomerDAO;
+import dao.customerDAO.CustomerDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.customer.Account;
 
 /**
  *
@@ -15,34 +18,44 @@ import javax.servlet.http.HttpSession;
  */
 public class Login extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private CustomerDAO customerDAO;
+    
+    @Override
+    public void init() {
+        this.customerDAO = new CustomerDAOImpl();
+    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
+            if (request.getParameter("username") == null) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+                dispatcher.forward(request, response); 
+                return;
+            } 
+            
             String username = request.getParameter("username").trim();
             String password = request.getParameter("password").trim();
-//            out.println(password);
-//            out.println(username);
-//            out.println(request.getContextPath());
+            
             if(username.equalsIgnoreCase("admin") && password.equalsIgnoreCase("admin")) {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("username", username);
                 response.sendRedirect("BookList");
                 
             } else {
-                out.println("<script type=\"text/javascript\">");
-                out.println("alert('Password incorrect');");
-                out.println("location='index.jsp';");
-                out.println("</script>");
+                Account account = new Account(username, password);
+                Account result = customerDAO.login(account);
+                if (result.getId() != 0) {
+                    HttpSession session = request.getSession(true);
+                    session.setAttribute("username", username);
+                    response.sendRedirect("BookItemList");
+                } else {
+                    out.println("<script type=\"text/javascript\">");
+                    out.println("alert('Password incorrect');");
+                    out.println("location='index.jsp';");
+                    out.println("</script>");
+                }
             }
         }
     }
