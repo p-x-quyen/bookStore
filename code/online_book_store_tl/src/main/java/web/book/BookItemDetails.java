@@ -43,6 +43,12 @@ public class BookItemDetails extends HttpServlet {
                 request.setAttribute("bookItem", bookItem);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-item-details.jsp");
                 dispatcher.forward(request, response);   
+            } else {
+                int id = Integer.parseInt(request.getParameter("id"));
+                BookItem bookItem = bookItemDAO.getBookItemById(id);
+                request.setAttribute("bookItem", bookItem);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("customer/book-item-details.jsp");
+                dispatcher.forward(request, response);
             }
         }
     }

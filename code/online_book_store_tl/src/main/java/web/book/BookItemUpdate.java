@@ -28,6 +28,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -104,9 +105,14 @@ public class BookItemUpdate extends HttpServlet {
     //                            System.out.println("img null");
                                 break;
                             } else {
-                                String storePath = servletContext.getRealPath("/uploads");
+                                String storePath = servletContext.getRealPath("/bookItemImages");
                                 Path path = Paths.get(storePath + "/" + "img" + bookId + ".jpg");
-                                Files.deleteIfExists(path);
+                                boolean result = Files.deleteIfExists(path);
+//                                if (result) {
+//                                    System.out.println("image deleted");
+//                                } else {
+//                                    System.out.println("not exist");
+//                                }
                                 File uploadFile = new File(storePath + "/" + "img" + bookId + ".jpg");
                                 item.write(uploadFile);
                             }

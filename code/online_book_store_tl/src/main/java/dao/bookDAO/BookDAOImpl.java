@@ -25,16 +25,9 @@ public class BookDAOImpl implements BookDAO{
     private PublisherDAO publisherDAO;
      
     public BookDAOImpl() {
-        try {
-            this.connection = ConnectDB.getConnection();
-            this.authorDAO = new AuthorDAOImpl();
-            this.publisherDAO = new PublisherDAOImpl();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.connection = null;
+        this.authorDAO = new AuthorDAOImpl();
+        this.publisherDAO = new PublisherDAOImpl();
     }
     
 
@@ -43,7 +36,8 @@ public class BookDAOImpl implements BookDAO{
         List<Book> listBooks = new ArrayList<>();
         String sql = "SELECT * FROM `book`";
         
-        try {    
+        try {
+            connection = ConnectDB.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
@@ -67,6 +61,10 @@ public class BookDAOImpl implements BookDAO{
             
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return listBooks;
@@ -78,7 +76,7 @@ public class BookDAOImpl implements BookDAO{
         String sql = "SELECT * FROM `book` WHERE `ID` = ?";
         
         try {
-            
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, bookId);
             
@@ -104,6 +102,10 @@ public class BookDAOImpl implements BookDAO{
             
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return book;
@@ -114,6 +116,7 @@ public class BookDAOImpl implements BookDAO{
         String sql = "SELECT * FROM `bookitem` WHERE `BookID` = ?";
         int bookItemId = 0;
         try {
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, bookId);
             
@@ -127,6 +130,10 @@ public class BookDAOImpl implements BookDAO{
             statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return bookItemId;
@@ -137,6 +144,7 @@ public class BookDAOImpl implements BookDAO{
         List<Book> listBooks = new ArrayList<>();
         String sql = "SELECT * FROM `book` WHERE `Name` LIKE ?";
         try {
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, "%" + bookName + "%");
             
@@ -162,6 +170,10 @@ public class BookDAOImpl implements BookDAO{
             statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return listBooks;
@@ -170,7 +182,9 @@ public class BookDAOImpl implements BookDAO{
     @Override
     public boolean createBook(Book book) {
         String sql = "INSERT INTO `book` (`PublisherID`, `Name`, `Summary`, `NumberOfPages`, `Language`, `ISBN`) VALUES (?, ?, ?, ?, ?, ?)";
+        boolean rowInserted = false;
         try {
+            connection = ConnectDB.getConnection();
             
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, book.getPublisher().getId());
@@ -189,26 +203,24 @@ public class BookDAOImpl implements BookDAO{
                     statement = connection.prepareStatement(sql);
                     statement.setInt(1, bookId);
                     statement.setInt(2, listAuthors.get(i).getId());
-                    boolean rowInserted = statement.executeUpdate() > 0;
-                    if (!rowInserted) {
-                        generatedKeys.close();
-                        statement.close();
-                        return false;
+                    rowInserted = statement.executeUpdate() > 0;
+                    if (rowInserted == false) {
+                        break;
                     }
                 }
-                generatedKeys.close();
-                statement.close();
-                return true;
-            } else {
-                generatedKeys.close();
-                statement.close();
-                return false;
             }
+            generatedKeys.close();
+            statement.close();
 
-            
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
+        
+        return rowInserted;
     }
 }

@@ -24,13 +24,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     private Connection connection;
      
     public CustomerDAOImpl() {
-        try {
-            this.connection = ConnectDB.getConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.connection = null;
     }
     
     
@@ -41,7 +35,8 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
         
         String sql = "INSERT INTO `customer` (`Email`, `Phone`, `DateOfBirth`, `Type`, `Gender`) VALUES (?, ?, ?, ?, ?)";
-        try {      
+        try {     
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, customerNew.getEmail());
             statement.setString(2, customerNew.getPhone());
@@ -103,32 +98,40 @@ public class CustomerDAOImpl implements CustomerDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(BookDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return "fail";
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
+        
+        return "fail";
     }
     
     private boolean existUsername(String username) {
         String sql = "SELECT * FROM `account` WHERE `Username` = ?";
-        
+        boolean result = false;
         try {
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
             
             ResultSet resultSet = statement.executeQuery();
             
             if (resultSet.next()) {
-                resultSet.close();
-                statement.close();
-                return true;
+                result = true;
             }
             
             resultSet.close();
             statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
-        return false;
+        return result;
     }
 
     @Override
@@ -136,6 +139,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         String sql = "SELECT * FROM `account` WHERE `Username` = ? AND `Password` = ?";
         Account result = new Account();
         try {
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, account.getUsername());
             statement.setString(2, account.getPassword());
@@ -144,15 +148,16 @@ public class CustomerDAOImpl implements CustomerDAO {
             
             if (resultSet.next()) {
                 result = new Account(resultSet.getInt("ID"), resultSet.getString("username"), resultSet.getString("password"));
-                resultSet.close();
-                statement.close();
-                return result;
             }
             
             resultSet.close();
             statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return result;

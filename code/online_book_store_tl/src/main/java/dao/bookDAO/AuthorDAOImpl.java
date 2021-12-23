@@ -22,22 +22,15 @@ public class AuthorDAOImpl implements AuthorDAO{
     private Connection connection;
      
     public AuthorDAOImpl() {
-        try {
-            this.connection = ConnectDB.getConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.connection = null;
     }
-    
-
+   
     @Override
     public Author getAuthorById(int authorId) {
         Author author = new Author();
         String sql = "SELECT * FROM `author` WHERE `ID` = ?";
-        
         try {
+            connection = ConnectDB.getConnection();
             
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, authorId);
@@ -55,9 +48,12 @@ public class AuthorDAOImpl implements AuthorDAO{
             
             resultSet.close();
             statement.close();
-            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return author;
@@ -66,11 +62,12 @@ public class AuthorDAOImpl implements AuthorDAO{
     @Override
     public List<Author> getAuthorsByBookId(int bookId) {
         List<Author> listAuthors = new ArrayList<>();
-        String sql = "SELECT `author`.* FROM `author`, `book_author`" + 
-                " WHERE `book_author`.`AuthorID` = `author`.`ID`"+
-                " AND `book_author`.`BookID` = ?";
+        String sql = "SELECT `author`.* FROM `author`, `book_author`" +
+                    " WHERE `book_author`.`AuthorID` = `author`.`ID`"+
+                    " AND `book_author`.`BookID` = ?";
         
         try {
+            connection = ConnectDB.getConnection();
             
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, bookId);
@@ -89,8 +86,12 @@ public class AuthorDAOImpl implements AuthorDAO{
             
             resultSet.close();
             statement.close();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return listAuthors;
@@ -101,6 +102,7 @@ public class AuthorDAOImpl implements AuthorDAO{
         List<Author> listAuthors = new ArrayList<>();
         String sql = "SELECT * FROM `author` WHERE `FullName` LIKE ?";
         try {
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, "%" + authorName + "%");
             
@@ -118,8 +120,13 @@ public class AuthorDAOImpl implements AuthorDAO{
             
             resultSet.close();
             statement.close();
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return listAuthors;
@@ -129,8 +136,8 @@ public class AuthorDAOImpl implements AuthorDAO{
     public List<Author> getAllAuthors() {
         List<Author> listAuthors = new ArrayList<>();
         String sql = "SELECT * FROM `author`";
-        
         try {
+            connection = ConnectDB.getConnection();
             
             PreparedStatement statement = connection.prepareStatement(sql);
             
@@ -148,8 +155,12 @@ public class AuthorDAOImpl implements AuthorDAO{
             
             resultSet.close();
             statement.close();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return listAuthors;
@@ -158,21 +169,25 @@ public class AuthorDAOImpl implements AuthorDAO{
     @Override
     public boolean createAuthor(Author author) {
         String sql = "INSERT INTO `author` (`FullName`, `Biography`, `Address`) VALUES (?, ?, ?)";
+        boolean rowInserted = false;
         try {
-            
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, author.getFullName());
             statement.setString(2, author.getBiography());
             statement.setString(3, author.getAddress());
             
-            boolean rowInserted = statement.executeUpdate() > 0;
+            rowInserted = statement.executeUpdate() > 0;
             statement.close();
-            
-            return rowInserted;
         } catch (SQLException ex) {
             Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
+        
+        return rowInserted;
     }
 
     

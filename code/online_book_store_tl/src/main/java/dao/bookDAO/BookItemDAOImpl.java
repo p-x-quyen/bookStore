@@ -23,34 +23,34 @@ public class BookItemDAOImpl implements BookItemDAO{
     private BookDAO bookDAO;
      
     public BookItemDAOImpl() {
-        try {
-            this.connection = ConnectDB.getConnection();
-            this.bookDAO = new BookDAOImpl();
-        } catch (SQLException ex) {
-            Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.connection = null;
+        this.bookDAO = new BookDAOImpl();
     }
     @Override
     public boolean createBookItem(BookItem bookItem) {
         String sql = "INSERT INTO `bookitem` (`BookID`, `Image`, `Price`, `Discount`) VALUES (?, ?, ?, ?)";
+        boolean rowInserted = false;
         try {
-            
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, bookItem.getBook().getId());
             statement.setString(2, bookItem.getImage());
             statement.setFloat(3, bookItem.getPrice());
             statement.setString(4, bookItem.getDiscount());
             
-            boolean rowInserted = statement.executeUpdate() > 0;
+            rowInserted = statement.executeUpdate() > 0;
             statement.close();
             
-            return rowInserted;
         } catch (SQLException ex) {
             Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
+        
+        return rowInserted;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BookItemDAOImpl implements BookItemDAO{
         String sql = "SELECT * FROM `bookitem`";
         
         try {
-            
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             
             ResultSet resultSet = statement.executeQuery();
@@ -80,6 +80,10 @@ public class BookItemDAOImpl implements BookItemDAO{
             statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return listBookItems;
@@ -91,7 +95,7 @@ public class BookItemDAOImpl implements BookItemDAO{
         String sql = "SELECT * FROM `bookitem` WHERE `ID` = ?";
         
         try {
-            
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, bookItemId);
             
@@ -113,6 +117,10 @@ public class BookItemDAOImpl implements BookItemDAO{
             
         } catch (SQLException ex) {
             Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return bookItem;
@@ -125,6 +133,7 @@ public class BookItemDAOImpl implements BookItemDAO{
                 " `bookitem`.`BookID` = `book`.`ID`" +
                 " AND `book`.`Name` LIKE ?";
         try {
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, "%" + bookName + "%");
             
@@ -146,6 +155,10 @@ public class BookItemDAOImpl implements BookItemDAO{
             statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return listBookItems;        
@@ -154,23 +167,26 @@ public class BookItemDAOImpl implements BookItemDAO{
     @Override
     public boolean updateBookItem(BookItem bookItem) {
         String sql = "UPDATE `bookitem` SET `Price` = ?, `Discount` = ? WHERE `ID` = ?";
+        boolean rowInserted = false;
         try {
-            
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setFloat(1, bookItem.getPrice());
             statement.setString(2, bookItem.getDiscount());
             statement.setInt(3, bookItem.getId());
-            System.out.println(bookItem.getId());
-            boolean rowInserted = statement.executeUpdate() > 0;
+//            System.out.println(bookItem.getId());
+            rowInserted = statement.executeUpdate() > 0;
 //            System.out.println(rowInserted);
             statement.close();
-            
-            return rowInserted;
         } catch (SQLException ex) {
             Logger.getLogger(AuthorDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BookItemDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
+        return rowInserted;
     }
     
 }

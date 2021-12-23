@@ -21,13 +21,7 @@ public class PublisherDAOImpl implements PublisherDAO{
     private Connection connection;
      
     public PublisherDAOImpl() {
-        try {
-            this.connection = ConnectDB.getConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(PublisherDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PublisherDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.connection = null;
     }
 
     @Override
@@ -36,7 +30,7 @@ public class PublisherDAOImpl implements PublisherDAO{
         String sql = "SELECT * FROM `publisher` WHERE `ID` = ?";
         
         try {
-            
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, publisherId);
             
@@ -55,6 +49,10 @@ public class PublisherDAOImpl implements PublisherDAO{
             statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(PublisherDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PublisherDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
         
         return publisher;
@@ -66,7 +64,7 @@ public class PublisherDAOImpl implements PublisherDAO{
         String sql = "SELECT * FROM `publisher`";
         
         try {
-            
+            connection = ConnectDB.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             
             ResultSet resultSet = statement.executeQuery();
@@ -85,7 +83,12 @@ public class PublisherDAOImpl implements PublisherDAO{
             statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(PublisherDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PublisherDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
         }
+        
         
         return listPublishers;
     }

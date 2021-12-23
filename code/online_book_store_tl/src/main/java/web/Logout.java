@@ -1,51 +1,36 @@
-package web.book;
+package web;
 
-import dao.bookDAO.BookDAOImpl;
-import dao.bookDAO.BookItemDAO;
-import dao.bookDAO.BookItemDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.book.Book;
-import model.book.BookItem;
 
 /**
  *
  * @author Administrator
  */
-public class BookItemList extends HttpServlet {
+public class Logout extends HttpServlet {
 
-    private BookItemDAO bookItemDAO;
-    
-    @Override
-    public void init() {
-        this.bookItemDAO = new BookItemDAOImpl();
-    }
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            HttpSession httpSession = request.getSession(false);
-            String username = (String)httpSession.getAttribute("username");
-            
-            if (username.equalsIgnoreCase("admin")) {
-                List<BookItem> listBookItems = bookItemDAO.getAllBookItems();
-    //            out.println(listBooks.get(0).toString());
-                request.setAttribute("listBookItems", listBookItems);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("admin/book-item-list.jsp");
-                dispatcher.forward(request, response);   
-            } else {
-                List<BookItem> listBookItems = bookItemDAO.getAllBookItems();
-                request.setAttribute("listBookItems", listBookItems);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("customer/book-item-list.jsp");
-                dispatcher.forward(request, response);  
-            }
+            /* TODO output your page here. You may use following sample code. */
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendRedirect("Login");
         }
     }
 

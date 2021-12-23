@@ -46,20 +46,28 @@ public class Search extends HttpServlet {
                 String value = request.getParameter("value");
                 switch(object) {
                     case "book":
-                        searchBook(value, out, request, response);
+                        searchBookForAdmin(value, out, request, response);
                         break;
                     case "author":
-                        searchAuthor(value, out, request, response);
+                        searchAuthorForAdmin(value, out, request, response);
                         break;
                     case "bookItem":
-                        searchBookItem(value, out, request, response);
+                        searchBookItemForAdmin(value, out, request, response);
+                        break;
+                }
+            } else {
+                String object = request.getParameter("object");
+                String value = request.getParameter("value");
+                switch(object) {
+                    case "bookItem":
+                        searchBookItemForCustomer(value, out, request, response);
                         break;
                 }
             }
         }
     }
     
-    private void searchBook(String value, PrintWriter out, HttpServletRequest request, HttpServletResponse response) {
+    private void searchBookForAdmin(String value, PrintWriter out, HttpServletRequest request, HttpServletResponse response) {
         List<Book> listBooks = bookDAO.searchBookByName(value);
         for(Book book: listBooks) {
             out.println("<tr>\n" +
@@ -84,7 +92,7 @@ public class Search extends HttpServlet {
         }
     }
     
-    private void searchAuthor(String value, PrintWriter out, HttpServletRequest request, HttpServletResponse response) {
+    private void searchAuthorForAdmin(String value, PrintWriter out, HttpServletRequest request, HttpServletResponse response) {
         List<Author> listAuthors = null;
         if (value.equalsIgnoreCase("")) {
             listAuthors = authorDAO.getAllAuthors();
@@ -111,7 +119,7 @@ public class Search extends HttpServlet {
         }
     }
     
-    private void searchBookItem(String value, PrintWriter out, HttpServletRequest request, HttpServletResponse response) {
+    private void searchBookItemForAdmin(String value, PrintWriter out, HttpServletRequest request, HttpServletResponse response) {
         List<BookItem> listBookItems = bookItemDAO.searchBookItemByName(value);
         for(BookItem bookItem: listBookItems) {
             out.println("<tr>\n" +
@@ -130,6 +138,38 @@ public class Search extends HttpServlet {
                         bookItem.getPrice() + "\n" +
                         "</td>\n" +
                         "</tr>");
+        }
+    }
+    
+    private void searchBookItemForCustomer(String value, PrintWriter out, HttpServletRequest request, HttpServletResponse response) {
+        List<BookItem> listBookItems = bookItemDAO.searchBookItemByName(value);
+        for(BookItem bookItem: listBookItems) {
+            float discount = Float.parseFloat(bookItem.getDiscount().trim());
+            float priceCurrent = bookItem.getPrice() - (bookItem.getPrice() * (discount / 100));
+            out.println("<div class=\"col col-sm-4\">\n" +
+                        "<a class=\"book-item\" href=\"BookItemDetails?id=" + bookItem.getId() + "\">\n" +
+                        "<div class=\"book-item__img\" style=\"background-image: url(" + request.getContextPath() + "/bookItemImages/" + bookItem.getImage() + ")\"></div>\n" +
+                        "<h4 class=\"book-item__name\">\n" +
+                        bookItem.getBook().getName() + "\n" +
+                        "</h4>\n" +
+                        "<div class=\"book-item__price d-flex flex-column\">\n" +
+                        "<span class=\"book-item__price-old \">" + bookItem.getPrice() + " (VND)</span>\n" +
+                        "<span class=\"book-item__price-current\">" + priceCurrent + " (VND)</span>\n" +
+                        "</div>\n" +
+                        "<div class=\"book-item__origin\">\n" +
+                        "<span class=\"book-item__brand \">Book store</span>\n" +
+                        "<span class=\"book-item__origin-name \">Ba Đình - Hà Nội</span>\n" +
+                        "</div>\n" +
+                        "<div class=\"book-item__favourite\">\n" +
+                        "<i class=\"fas fa-check\"></i>\n" +
+                        "<span>Favorite</span>\n" +
+                        "</div>\n" +
+                        "<div class=\"book-item__sale-off\">\n" +
+                        "<span class=\"book-item__sale-off-label\">Off</span>\n" +
+                        "<span class=\"book-item__sale-off-percent\">" + bookItem.getDiscount() + "%</span>\n" +
+                        "</div>\n" +
+                        "</a>\n" +
+                        "</div>");
         }
     }
   
@@ -171,7 +211,5 @@ public class Search extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-   
 
 }

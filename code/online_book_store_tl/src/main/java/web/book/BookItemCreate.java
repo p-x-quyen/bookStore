@@ -7,6 +7,7 @@ import dao.bookDAO.BookItemDAOImpl;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
@@ -88,12 +89,17 @@ public class BookItemCreate extends HttpServlet {
                         }
                     } else {
                         String fileName =  item.getName();
-                        System.out.println(fileName);
+//                        System.out.println(fileName);
                         if (fileName == null || fileName.equalsIgnoreCase("")) {
                             break;
                         } else {
     //                        Path path = Paths.get(fileName);
-                            String storePath = servletContext.getRealPath("/uploads");
+                            String storePath = servletContext.getRealPath("/bookItemImages");
+                            if (!Files.exists(Paths.get(storePath))) {
+                                Files.createDirectory(Paths.get(storePath));
+//                                System.out.println("created");
+                            }
+                            
                             File uploadFile = new File(storePath + "/" + "img" + bookId + ".jpg");
                             item.write(uploadFile);
                         }
