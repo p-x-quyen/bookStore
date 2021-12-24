@@ -70,7 +70,7 @@ public class Register extends HttpServlet {
                 System.out.println(username);
                 System.out.println(password);
                 
-                String note = "";
+                String note = "new";
                 String type = "new";
                 
                 if (!username.matches("^[a-z0-9_-]{3,}$")) {

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.customer.Account;
+import model.order.Cart;
 
 /**
  *
@@ -49,6 +50,7 @@ public class Login extends HttpServlet {
                 if (result.getId() != 0) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("username", username);
+                    session.setAttribute("cart", new Cart());
                     response.sendRedirect("BookItemList");
                 } else {
                     out.println("<script type=\"text/javascript\">");

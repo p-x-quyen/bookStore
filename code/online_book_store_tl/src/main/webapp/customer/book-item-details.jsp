@@ -4,6 +4,8 @@
     Author     : Administrator
 --%>
 
+<%@page import="model.Pair"%>
+<%@page import="model.order.Cart"%>
 <%@page import="java.util.List"%>
 <%@page import="model.book.Author"%>
 <%@page import="model.book.BookItem"%>
@@ -118,7 +120,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <h5>Quantity</h5>
-                                    <input type="text" class="p-2" value = "1">
+                                    <input type="text" class="p-2 quantity-input" value = "1">
                                 </div>
                                 <div class="mb-2">
                                     <div class="p-2 bg-primary text-white rounded float-right" id="add-to-cart" style="display: inline-block; cursor: pointer;">Add to cart</div>
@@ -131,34 +133,20 @@
         </div>
         <script src="<%=request.getContextPath()%>/assets/js/jquery-3.5.1.min.js"></script>
         <script>
-//            $('#open-file').click(function(){ 
-//                $('#input-img').trigger('click'); 
-//            });
-//            $('#update-btn').click(function(){ 
-//                $('#update-btn').hide();
-//                $('.saved-info').hide();
-//                $('#confirm-btn').show();
-//                $('#cancel-btn').show();
-//                $('#open-file').show();
-//                $('.change-input').show();
-//                 $(".img-path").show();
-//            });
-//            $('#cancel-btn').click(function(){ 
-//                //delete all input and set photo, input again
-//                $('#update-btn').show();
-//                $('.saved-info').show();
-//                $('#confirm-btn').hide();
-//                $('#cancel-btn').hide();
-//                $('#open-file').hide();
-//                $('.change-input').hide();
-//                 $(".img-path").hide();
-//            });
-//            
-//            $('#input-img').on('change', function() {
-////               console.log($('#input-img').val()); 
-//                $(".img-path").text($('#input-img').val());
-////                $(".change-image").val("true");
-//            });
+            
+            $('#add-to-cart').click(function(){ 
+                var quantity = $(".quantity-input").val().trim();
+                if (quantity === "" || !isNaN(quantity) || !Number.isInteger(parseInt(quantity)) || parseInt(quantity) < 1) {
+                    alert("quantity must be more than 0");
+                    return;
+                }
+                $.get("AddToCart", {
+                    "bookItemId": <%=bookItem.getId()%>,
+                    "quantity": quantity
+                }, function(result) {
+                    alert(result);
+                });
+            });
         </script> 
     </body>
 </html>

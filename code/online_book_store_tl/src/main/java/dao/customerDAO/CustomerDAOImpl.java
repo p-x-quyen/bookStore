@@ -48,6 +48,17 @@ public class CustomerDAOImpl implements CustomerDAO {
             if(generatedKeys.next()) {
                 int customerID = generatedKeys.getInt(1);
                 
+                sql = "INSERT INTO `customernew` (`Note`, `CustomerID`) VALUES (?, ?)";
+                statement = connection.prepareStatement(sql);
+                statement.setString(1, customerNew.getNote());
+                statement.setInt(2, customerID);
+                boolean rowInserted = statement.executeUpdate() > 0;
+                if (!rowInserted) {
+                    generatedKeys.close();
+                    statement.close();
+                    return "fail";
+                }
+                
                 sql = "INSERT INTO `address` (`CustomerID`, `City`, `District`, `Street`, `HouseNumber`) VALUES (?, ?, ?, ?, ?)";
                 statement = connection.prepareStatement(sql);
                 statement.setInt(1, customerID);
@@ -55,7 +66,7 @@ public class CustomerDAOImpl implements CustomerDAO {
                 statement.setString(3, customerNew.getAddress().getDistrict());
                 statement.setString(4, customerNew.getAddress().getStreet());
                 statement.setString(5, customerNew.getAddress().getHouseNumber());
-                boolean rowInserted = statement.executeUpdate() > 0;
+                rowInserted = statement.executeUpdate() > 0;
                 if (!rowInserted) {
                     generatedKeys.close();
                     statement.close();

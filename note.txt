@@ -4,6 +4,11 @@ association là quan hệ hai chiều khi chuyển sang 3layers
 xóa visual đi và chỉnh lại gender thành int
 tại các bảng nối quan hệ nhiều nhiều thì them thuộc tính id riêng cho bảng đó ở trong database
 
+quan hệ của book và bookitem phải ngược lại
+quan hệ bookitem và card để là qheej bao gồm
+quan hệ payment, shipment, với order để là association thôi
+check lại toàn bộ kiểu biến
+
 INSERT INTO `online_book_store_tl`.`author` (`FullName`, `Biography`, `Address`) VALUES ('Nguyễn Văn An', 'Tốt nghiệp đại học Hà Nội - 2000', 'Hà Nội');
 INSERT INTO `online_book_store_tl`.`author` (`FullName`, `Biography`, `Address`) VALUES ('Phạm Văn Tâm', 'Tốt nghiệp đại học Hà Nội - 2000', 'Hà Nội');
 
