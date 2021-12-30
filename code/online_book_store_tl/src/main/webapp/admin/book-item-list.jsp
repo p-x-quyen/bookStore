@@ -78,13 +78,13 @@
                                         ID
                                     </th>
                                     <th class="border-bottom-0">
-                                        Tên sách
+                                        Name
                                     </th>
                                     <th class="border-bottom-0">
-                                        Ảnh
+                                        Image
                                     </th>
                                     <th class="border-bottom-0">
-                                        Giá
+                                        Price
                                     </th>
                                 </tr>
                             </thead>

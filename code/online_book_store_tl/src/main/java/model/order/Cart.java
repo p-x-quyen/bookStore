@@ -97,13 +97,32 @@ public class Cart {
                 this.totalQuantity += addedPair.getValue();
                 float price = addedPair.getKey().getPrice();
                 float discount = Float.parseFloat(addedPair.getKey().getDiscount()) / 100;
-                this.totalPrice += (price - (discount * price));
+                this.totalPrice += addedPair.getValue() * (price - (discount * price));
                 
                 return;
             }
         }
         
         this.listBookItems.add(addedPair);
+        this.totalQuantity += addedPair.getValue();
+        float price = addedPair.getKey().getPrice();
+        float discount = Float.parseFloat(addedPair.getKey().getDiscount()) / 100;
+        this.totalPrice += addedPair.getValue() * (price - (discount * price));
+    }
+    
+    public void removeBookItemPair(int bookItemId) {
+        int size = this.listBookItems.size();
+        for (int i = 0; i < size; i++) {
+            Pair<BookItem, Integer> bookItemPair = this.listBookItems.get(i);
+            if (bookItemPair.getKey().getId() == bookItemId) {
+                this.totalQuantity -= bookItemPair.getValue();
+                float price = bookItemPair.getKey().getPrice();
+                float discount = Float.parseFloat(bookItemPair.getKey().getDiscount()) / 100;
+                this.totalPrice -= bookItemPair.getValue() * (price - (discount * price));
+                this.listBookItems.remove(i);
+                return;
+            }
+        }
     }
 
     @Override

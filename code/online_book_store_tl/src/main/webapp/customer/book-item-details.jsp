@@ -17,7 +17,6 @@
         <link href="<%=request.getContextPath()%>/assets/font/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
         <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/header.css">
         <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/side-bar.css">
-        <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/customer/book-item-details.css">
         <title>Book item details</title>
     </head>
     <body>
@@ -50,7 +49,7 @@
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="" class="nav-link">
+                            <a href="CreateCart?action=view" class="nav-link">
                                 <i class="fas fa-shopping-cart"></i>
                                 Cart
                             </a>
@@ -136,11 +135,12 @@
             
             $('#add-to-cart').click(function(){ 
                 var quantity = $(".quantity-input").val().trim();
-                if (quantity === "" || !isNaN(quantity) || !Number.isInteger(parseInt(quantity)) || parseInt(quantity) < 1) {
+                if (quantity === "" || isNaN(quantity) || !Number.isInteger(parseInt(quantity)) || parseInt(quantity) < 1) {
                     alert("quantity must be more than 0");
                     return;
                 }
-                $.get("AddToCart", {
+                $.post("AddToCart", {
+                    "action": "add",
                     "bookItemId": <%=bookItem.getId()%>,
                     "quantity": quantity
                 }, function(result) {

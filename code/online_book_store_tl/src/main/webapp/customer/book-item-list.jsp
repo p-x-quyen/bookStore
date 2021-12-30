@@ -48,7 +48,7 @@
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="" class="nav-link">
+                            <a href="CreateCart?action=view" class="nav-link">
                                 <i class="fas fa-shopping-cart"></i>
                                 Cart
                             </a>
