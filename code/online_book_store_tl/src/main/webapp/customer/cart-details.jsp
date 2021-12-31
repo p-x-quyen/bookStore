@@ -127,7 +127,7 @@
                                 %>
                                 
                                 <td class="align-middle">
-                                    Total
+                                    Total of books
                                 </td>
                                 <td class="align-middle">
                                 </td>
@@ -141,7 +141,21 @@
                                 </td>
                             </tbody>
                         </table>
-                        <div class="shadow p-3 mb-4 mt-4 bg-white rounded check-out">
+                        <div class="shadow p-3 mb-3 mt-3 bg-white rounded shipment">
+                            <h5>Shipment</h5>
+                            <div class="form-group d-flex flex-column">
+                                <label for="shipment-type">Type</label>
+                                <select class="form-select mb-2 mt-2" id="shipment-type" aria-label="Default select example">
+                                    <option value="EXW">EXW - 30000 VND</option>
+                                    <option value="FCA">FCA - 30000 VND</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="shipment-address">Address</label>
+                                <input type="text" class="form-control" id="shipment-address" placeholder="Address">
+                            </div>
+                        </div>
+                        <div class="shadow p-3 mb-3 mt-3 bg-white rounded check-out">
                             <h5>Check out</h5>
                             <div class="form-group d-flex flex-column">
                                 <label for="check-out-type">Type</label>
@@ -182,20 +196,10 @@
                                 </div>
                             </div>
                         </div> 
-                        <div class="shadow p-3 mb-4 bg-white rounded shipment">
-                            <h5>Shipment</h5>
-                            <div class="form-group d-flex flex-column">
-                                <label for="shipment-type">Type</label>
-                                <select class="form-select mb-2 mt-2" id="shipment-type" aria-label="Default select example">
-                                    <option value="EXW">EXW - 30000VND</option>
-                                    <option value="FCA">FCA - 30000VND</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="shipment-address">Address</label>
-                                <input type="text" class="form-control" id="shipment-address" placeholder="Address">
-                            </div>
-                        </div>
+<!--                        <div class="shadow p-3 mb-3 mt-3 bg-white rounded shipment d-flex align-items-end">
+                            <h5 class="m-0 pr-3">Bill total: </h5>
+                            <h6 class="m-0 bill-total">Bill total: </h6>
+                        </div>-->
                         <button class="btn p-2 bg-primary text-white float-right" id="order-btn">Order</button>
                     </div>
                 </div>
@@ -224,6 +228,11 @@
                 var shipmentType = $("#shipment-type").val().trim();
                 var shipmentAddress = $("#shipment-address").val().trim();
                 
+                if (shipmentAddress === "") {
+                    alert("enter address");
+                    return;
+                }
+                
                 if (paymentType === "check") {
                     var name = $("#check-name").val().trim();
                     if (name === "") {
@@ -235,6 +244,17 @@
                         alert("enter bank id");
                         return;
                     }
+                    
+                    $.post("CreateCart", {
+                        "action": "create",
+                        "shipmentType": shipmentType,
+                        "shipmentAddress": shipmentAddress,
+                        "paymentType": paymentType,
+                        "name": name,
+                        "bankId": bankId
+                    }, function(result) {
+                        alert(result);
+                    });
                     
                 } else if (paymentType === "credit") {
                     var number = $("#credit-number").val().trim();
@@ -252,12 +272,34 @@
                         alert("select expire date");
                         return;
                     }
+                    
+                    $.post("CreateCart", {
+                        "action": "create",
+                        "shipmentType": shipmentType,
+                        "shipmentAddress": shipmentAddress,
+                        "paymentType": paymentType,
+                        "number": number,
+                        "type": type,
+                        "expDate": expDate
+                    }, function(result) {
+                        alert(result);
+                    });
                 } else if (paymentType === "cash") {
                     var cashTendered = $("#cash-tendered").val().trim();
                     if (cashTendered === "") {
                         alert("enter cash tendered");
                         return;
                     }
+                    
+                    $.post("CreateCart", {
+                        "action": "create",
+                        "shipmentType": shipmentType,
+                        "shipmentAddress": shipmentAddress,
+                        "paymentType": paymentType,
+                        "cashTendered": cashTendered
+                    }, function(result) {
+                        alert(result);
+                    });
                 } 
             });
         </script>

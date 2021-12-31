@@ -173,5 +173,35 @@ public class CustomerDAOImpl implements CustomerDAO {
         
         return result;
     }
+
+    @Override
+    public int getIdByUsername(String username) {
+        String sql = "SELECT `customer`.`ID` FROM `account`, `customer`"
+                + " WHERE `account`.`CustomerID` = `customer`.`ID`"
+                + " AND `account`.`Username` = ?";
+        int id = 0;
+        try {
+            connection = ConnectDB.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, username);
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                id = resultSet.getInt("ID");
+            }
+            
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(CustomerDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+           ConnectDB.closeConnection(connection);
+        }
+        
+        return id;
+    }
     
 }

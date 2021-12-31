@@ -50,6 +50,7 @@ public class Login extends HttpServlet {
                 if (result.getId() != 0) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("username", username);
+                    session.setAttribute("userId", account.);
                     session.setAttribute("cart", new Cart());
                     response.sendRedirect("BookItemList");
                 } else {
