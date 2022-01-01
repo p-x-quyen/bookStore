@@ -132,7 +132,7 @@ public class Search extends HttpServlet {
                         "</a>\n" +
                         "</td>\n" +
                         "<td class=\"align-middle\">\n" +
-                        "<img src=\"" + request.getContextPath() + "/uploads/" + bookItem.getImage() + "\" class=\"book-item-img\">\n" +
+                        "<img src=\"" + request.getContextPath() + "/bookItemImages/" + bookItem.getImage() + "\" class=\"book-item-img\">\n" +
                         "</td>\n" +
                         "<td class=\"align-middle\">\n" +
                         bookItem.getPrice() + "\n" +

@@ -22,6 +22,7 @@ public class Cart {
         this.totalQuantity = 0;
         this.totalPrice = 0;
         this.listBookItems = new ArrayList<>();
+        this.createDate = new Date();
     }
 
     public Cart(int totalQuantity, float totalPrice, Date createDate, List<Pair<BookItem, Integer>> listBookItems) {

@@ -175,7 +175,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public int getIdByUsername(String username) {
+    public int getIdCustomerByUsername(String username) {
         String sql = "SELECT `customer`.`ID` FROM `account`, `customer`"
                 + " WHERE `account`.`CustomerID` = `customer`.`ID`"
                 + " AND `account`.`Username` = ?";

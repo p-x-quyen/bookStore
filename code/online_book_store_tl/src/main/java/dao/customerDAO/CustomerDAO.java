@@ -10,5 +10,5 @@ import model.customer.CustomerNew;
 public interface CustomerDAO {
     String createCustomer(CustomerNew customerNew);
     Account login(Account account);
-    int getIdByUsername(String username);
+    int getIdCustomerByUsername(String username);
 }

@@ -1,34 +1,30 @@
 package web.order;
 
-import dao.Oder.CartDAO;
-import dao.Oder.CartDAOImpl;
 import dao.bookDAO.BookItemDAO;
 import dao.bookDAO.BookItemDAOImpl;
-import dao.customerDAO.CustomerDAO;
-import dao.customerDAO.CustomerDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Pair;
+import model.book.Book;
+import model.book.BookItem;
 import model.order.Cart;
 
 /**
  *
  * @author Administrator
  */
-public class CreateCart extends HttpServlet {
+public class CartAddBookItem extends HttpServlet {
 
-    private CartDAO carDAO;
-    private CustomerDAO customerDAO;
+    private BookItemDAO bookItemDAO;
     
     @Override
     public void init() {
-        this.carDAO = new CartDAOImpl();
-        this.customerDAO = new CustomerDAOImpl();
+        this.bookItemDAO = new BookItemDAOImpl();
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -36,34 +32,27 @@ public class CreateCart extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            HttpSession httpSession = request.getSession(false);
+            Cart cart = (Cart)httpSession.getAttribute("cart");
             String action = request.getParameter("action");
-            if (action.equalsIgnoreCase("view")) {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("customer/cart-details.jsp");
-                dispatcher.forward(request, response);
-            } else if (action.equalsIgnoreCase("create")) {
-                HttpSession httpSession = request.getSession(false);
-                Cart cart = (Cart)httpSession.getAttribute("cart");
-                
-                if (cart.getTotalQuantity() == 0) {
-                    out.println("your cart does not has any book");
+            if (action.equalsIgnoreCase("add")) {
+                int id = Integer.parseInt(request.getParameter("bookItemId"));
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+                BookItem bookItem = bookItemDAO.getBookItemById(id);
+
+                if (bookItem.getId() != 0) {
+                    Pair<BookItem, Integer> bookItemPair = new Pair<>(bookItem, quantity);
+                    cart.addBookItemPair(bookItemPair);
+
+                    out.println("success (number of books: " + cart.getTotalQuantity() + ")");
                 } else {
-                    String shipmentType = request.getParameter("shipmentType");
-//                    System.out.println(shipmentType);
-                    String shipmentAddress = request.getParameter("shipmentAddress");
-//                    System.out.println(shipmentAddress);
-                    String paymentType = request.getParameter("paymentType");
-//                    System.out.println(paymentType);
-                    
-                    if (paymentType.equalsIgnoreCase("check")) {
-                        String name = request.getParameter("name");
-//                        System.out.println(name);
-                        String bankId = request.getParameter("bankId");
-//                        System.out.println(bankId);
-                        
-                        
-                    }
-                    
+                    out.println("cannot add to cart");
                 }
+            } else if (action.equalsIgnoreCase("remove")) {
+                int id = Integer.parseInt(request.getParameter("bookItemId"));
+                cart.removeBookItemPair(id);
+                response.sendRedirect("CreateOrder?action=viewCart");
             }
         }
     }

@@ -4,6 +4,8 @@ import dao.customerDAO.CustomerDAO;
 import dao.customerDAO.CustomerDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -50,7 +52,6 @@ public class Login extends HttpServlet {
                 if (result.getId() != 0) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("username", username);
-                    session.setAttribute("userId", account.);
                     session.setAttribute("cart", new Cart());
                     response.sendRedirect("BookItemList");
                 } else {

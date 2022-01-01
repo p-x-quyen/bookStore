@@ -48,13 +48,13 @@
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="CreateCart?action=view" class="nav-link">
+                            <a href="OrderCreate?action=viewCart" class="nav-link">
                                 <i class="fas fa-shopping-cart"></i>
                                 Cart
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link">
+                            <a href="OrderDetails" class="nav-link">
                                 <i class="fas fa-scroll"></i>
                                 Orders
                             </a>

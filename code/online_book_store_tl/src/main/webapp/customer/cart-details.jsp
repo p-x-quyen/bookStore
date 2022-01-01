@@ -50,13 +50,13 @@
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="CreateCart?action=view" class="nav-link active">
+                            <a href="OrderCreate?action=viewCart" class="nav-link active">
                                 <i class="fas fa-shopping-cart"></i>
                                 Cart
                             </a>
                         </li>
                         <li class="nav-item pt-2">
-                            <a href="#" class="nav-link">
+                            <a href="OrderDetails" class="nav-link">
                                 <i class="fas fa-scroll"></i>
                                 Orders
                             </a>
@@ -119,26 +119,27 @@
                                         <%=quantity%>
                                     </td>
                                     <td class="align-middle">
-                                        <a class="btn btn-primary" href="AddToCart?action=remove&bookItemId=<%=bookItem.getId()%>" role="button">remove</a>
+                                        <a class="btn btn-primary" href="CartAddBookItem?action=remove&bookItemId=<%=bookItem.getId()%>" role="button">remove</a>
                                     </td>
                                 </tr>
                                 <%
                                     }
                                 %>
-                                
-                                <td class="align-middle">
-                                    Total of books
-                                </td>
-                                <td class="align-middle">
-                                </td>
-                                <td class="align-middle">
-                                    <%=cart.getTotalPrice()%>
-                                </td>
-                                <td class="align-middle">
-                                    <%=cart.getTotalQuantity()%>
-                                </td>
-                                <td class="align-middle">
-                                </td>
+                                <tr>
+                                    <td class="align-middle">
+                                        Total of books
+                                    </td>
+                                    <td class="align-middle">
+                                    </td>
+                                    <td class="align-middle">
+                                        <%=cart.getTotalPrice()%>
+                                    </td>
+                                    <td class="align-middle">
+                                        <%=cart.getTotalQuantity()%>
+                                    </td>
+                                    <td class="align-middle">
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         <div class="shadow p-3 mb-3 mt-3 bg-white rounded shipment">
@@ -245,7 +246,7 @@
                         return;
                     }
                     
-                    $.post("CreateCart", {
+                    $.post("OrderCreate", {
                         "action": "create",
                         "shipmentType": shipmentType,
                         "shipmentAddress": shipmentAddress,
@@ -254,6 +255,7 @@
                         "bankId": bankId
                     }, function(result) {
                         alert(result);
+                        location.reload();
                     });
                     
                 } else if (paymentType === "credit") {
@@ -273,17 +275,17 @@
                         return;
                     }
                     
-                    $.post("CreateCart", {
-                        "action": "create",
-                        "shipmentType": shipmentType,
-                        "shipmentAddress": shipmentAddress,
-                        "paymentType": paymentType,
-                        "number": number,
-                        "type": type,
-                        "expDate": expDate
-                    }, function(result) {
-                        alert(result);
-                    });
+//                    $.post("CreateOrder", {
+//                        "action": "create",
+//                        "shipmentType": shipmentType,
+//                        "shipmentAddress": shipmentAddress,
+//                        "paymentType": paymentType,
+//                        "number": number,
+//                        "type": type,
+//                        "expDate": expDate
+//                    }, function(result) {
+//                        alert(result);
+//                    });
                 } else if (paymentType === "cash") {
                     var cashTendered = $("#cash-tendered").val().trim();
                     if (cashTendered === "") {
@@ -291,15 +293,15 @@
                         return;
                     }
                     
-                    $.post("CreateCart", {
-                        "action": "create",
-                        "shipmentType": shipmentType,
-                        "shipmentAddress": shipmentAddress,
-                        "paymentType": paymentType,
-                        "cashTendered": cashTendered
-                    }, function(result) {
-                        alert(result);
-                    });
+//                    $.post("CreateOrder", {
+//                        "action": "create",
+//                        "shipmentType": shipmentType,
+//                        "shipmentAddress": shipmentAddress,
+//                        "paymentType": paymentType,
+//                        "cashTendered": cashTendered
+//                    }, function(result) {
+//                        alert(result);
+//                    });
                 } 
             });
         </script>

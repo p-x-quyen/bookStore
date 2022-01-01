@@ -49,12 +49,16 @@
         <servlet-class>web.Logout</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddToCart</servlet-name>
-        <servlet-class>web.order.AddToCart</servlet-class>
+        <servlet-name>CartAddBookItem</servlet-name>
+        <servlet-class>web.order.CartAddBookItem</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateCart</servlet-name>
-        <servlet-class>web.order.CreateCart</servlet-class>
+        <servlet-name>OrderCreate</servlet-name>
+        <servlet-class>web.order.OrderCreate</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderDetails</servlet-name>
+        <servlet-class>web.order.OrderDetails</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -105,12 +109,16 @@
         <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddToCart</servlet-name>
-        <url-pattern>/AddToCart/*</url-pattern>
+        <servlet-name>CartAddBookItem</servlet-name>
+        <url-pattern>/CartAddBookItem/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateCart</servlet-name>
-        <url-pattern>/CreateCart/*</url-pattern>
+        <servlet-name>OrderCreate</servlet-name>
+        <url-pattern>/OrderCreate/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderDetails</servlet-name>
+        <url-pattern>/OrderDetails/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

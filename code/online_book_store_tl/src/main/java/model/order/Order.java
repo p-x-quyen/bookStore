@@ -16,6 +16,12 @@ public class Order {
     public Order() {
     }
 
+    public Order(int id, Date createDate, String status) {
+        this.id = id;
+        this.createDate = createDate;
+        this.status = status;
+    }
+
     public Order(Date createDate, String status, Cart cart) {
         this.createDate = createDate;
         this.status = status;
