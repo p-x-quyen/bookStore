@@ -1,4 +1,4 @@
-package dao.Oder;
+package dao.OrderDAO;
 
 import dao.bookDAO.AuthorDAOImpl;
 import java.sql.Connection;

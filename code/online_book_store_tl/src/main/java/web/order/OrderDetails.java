@@ -1,13 +1,13 @@
 package web.order;
 
-import dao.Oder.CartDAO;
-import dao.Oder.CartDAOImpl;
-import dao.Oder.OrderDAO;
-import dao.Oder.OrderDAOImpl;
-import dao.Oder.PaymentDAO;
-import dao.Oder.PaymentDAOImpl;
-import dao.Oder.ShipmentDAO;
-import dao.Oder.ShipmentDAOImpl;
+import dao.OrderDAO.CartDAO;
+import dao.OrderDAO.CartDAOImpl;
+import dao.OrderDAO.OrderDAO;
+import dao.OrderDAO.OrderDAOImpl;
+import dao.OrderDAO.PaymentDAO;
+import dao.OrderDAO.PaymentDAOImpl;
+import dao.OrderDAO.ShipmentDAO;
+import dao.OrderDAO.ShipmentDAOImpl;
 import dao.customerDAO.CustomerDAO;
 import dao.customerDAO.CustomerDAOImpl;
 import java.io.IOException;

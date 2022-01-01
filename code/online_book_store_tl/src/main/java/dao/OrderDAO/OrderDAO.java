@@ -1,4 +1,4 @@
-package dao.Oder;
+package dao.OrderDAO;
 
 import java.util.List;
 import model.order.Order;

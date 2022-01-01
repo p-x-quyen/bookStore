@@ -1,4 +1,4 @@
-package dao.Oder;
+package dao.OrderDAO;
 
 import dao.bookDAO.BookItemDAO;
 import dao.bookDAO.BookItemDAOImpl;
