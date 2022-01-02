@@ -9,6 +9,7 @@ public class BookItem {
     String image;
     float price;
     String discount;
+    
     Book book;
 
     public BookItem() {
