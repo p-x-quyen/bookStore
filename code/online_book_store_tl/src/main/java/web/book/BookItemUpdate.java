@@ -108,6 +108,8 @@ public class BookItemUpdate extends HttpServlet {
                                 String storePath = servletContext.getRealPath("/bookItemImages");
                                 Path path = Paths.get(storePath + "/" + "img" + bookId + ".jpg");
                                 boolean result = Files.deleteIfExists(path);
+//                                boolean test = Files.deleteIfExists(Paths.get(storePath + "/" + "img" + "19" + ".jpg"));
+//                                System.out.println(test);
 //                                if (result) {
 //                                    System.out.println("image deleted");
 //                                } else {

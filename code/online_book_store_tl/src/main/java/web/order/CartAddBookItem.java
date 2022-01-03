@@ -52,7 +52,7 @@ public class CartAddBookItem extends HttpServlet {
             } else if (action.equalsIgnoreCase("remove")) {
                 int id = Integer.parseInt(request.getParameter("bookItemId"));
                 cart.removeBookItemPair(id);
-                response.sendRedirect("CreateOrder?action=viewCart");
+                response.sendRedirect("OrderCreate?action=viewCart");
             }
         }
     }

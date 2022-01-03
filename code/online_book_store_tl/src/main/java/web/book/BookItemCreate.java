@@ -101,6 +101,7 @@ public class BookItemCreate extends HttpServlet {
                             }
                             
                             File uploadFile = new File(storePath + "/" + "img" + bookId + ".jpg");
+//                            System.out.println(uploadFile.getAbsolutePath());
                             item.write(uploadFile);
                         }
                     }

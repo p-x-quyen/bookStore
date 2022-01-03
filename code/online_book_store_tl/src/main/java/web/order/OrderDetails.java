@@ -109,7 +109,7 @@ public class OrderDetails extends HttpServlet {
                                         bookItemPair.getValue() + "\n" +
                     "            </td>\n" +
                     "            <td class=\"align-middle\">\n" +
-                                        bookItemPair.getKey().getDiscount() + "\n" +
+                                        bookItemPair.getKey().getDiscount() + "%" + "\n" +
                     "            </td>\n" +
                     "        </tr>";
                 }
